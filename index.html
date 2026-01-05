@@ -1,0 +1,1745 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_89db016eae5f8c027bf315b316152718 {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            </style>
+
+            <style>html, body {
+                width: 100%;
+                height: 100%;
+                margin: 0;
+                padding: 0;
+            }
+            </style>
+
+            <style>#map {
+                position:absolute;
+                top:0;
+                bottom:0;
+                right:0;
+                left:0;
+                }
+            </style>
+
+            <script>
+                L_NO_TOUCH = false;
+                L_DISABLE_3D = false;
+            </script>
+
+        
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.1.0/leaflet.markercluster.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.1.0/MarkerCluster.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.markercluster/1.1.0/MarkerCluster.Default.css"/>
+</head>
+<body>
+    
+    
+            <div class="folium-map" id="map_89db016eae5f8c027bf315b316152718" ></div>
+        
+</body>
+<script>
+    
+    
+            var map_89db016eae5f8c027bf315b316152718 = L.map(
+                "map_89db016eae5f8c027bf315b316152718",
+                {
+                    center: [23.6345, -102.5528],
+                    crs: L.CRS.EPSG3857,
+                    ...{
+  "zoom": 5,
+  "zoomControl": true,
+  "preferCanvas": false,
+}
+
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_e4adcadb82e796791cd7184ba1d81022 = L.tileLayer(
+                "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+                {
+  "minZoom": 0,
+  "maxZoom": 19,
+  "maxNativeZoom": 19,
+  "noWrap": false,
+  "attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors",
+  "subdomains": "abc",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 1,
+}
+
+            );
+        
+    
+            tile_layer_e4adcadb82e796791cd7184ba1d81022.addTo(map_89db016eae5f8c027bf315b316152718);
+        
+    
+            var marker_cluster_ae8cd92f2f9d8a632267034a39722f76 = L.markerClusterGroup(
+                {
+}
+            );
+        
+    
+            var marker_629e1c5cb6a8af298f948956587ec33b = L.marker(
+                [19.4326, -99.1332],
+                {
+}
+            ).addTo(marker_cluster_ae8cd92f2f9d8a632267034a39722f76);
+        
+    
+        var popup_e825dd511def8c8d72babbfafb9d2dca = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_68a5126fb37d67e3b32cec943909fff7 = $(`<div id="html_68a5126fb37d67e3b32cec943909fff7" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial; width: 300px;">         <h4 style="color: #8B0000;">Observatorio Ciudadano Nacional del Feminicidio (OCNF)</h4>         <p><strong>Estado:</strong> Ciudad de México</p>         <p><strong>Metodología:</strong><br>Monitoreo de medios, judiciales y colectivos; sistematización mensual vía red de 40+ OSC 1) Monitoreo de medios. 2) Acompañamiento legal de casos (fuente primaria). 3) Solicitudes de acceso a la información a fiscalías.</p>         <p><strong>Tipo de Datos:</strong><br>Base interactiva (>3,000 casos), informes anuales, mapas ​</p>         <p><a href="observatoriofeminicidiomexico.org ​" target="_blank">Ver fuente</a></p>     </div>     </div>`)[0];
+                popup_e825dd511def8c8d72babbfafb9d2dca.setContent(html_68a5126fb37d67e3b32cec943909fff7);
+            
+        
+
+        marker_629e1c5cb6a8af298f948956587ec33b.bindPopup(popup_e825dd511def8c8d72babbfafb9d2dca)
+        ;
+
+        
+    
+    
+            marker_629e1c5cb6a8af298f948956587ec33b.bindTooltip(
+                `<div>
+                     Observatorio Ciudadano Nacional del Feminicidio (OCNF)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_4735599eb6386861889e2d9a51be0005 = L.marker(
+                [19.4326, -99.1332],
+                {
+}
+            ).addTo(marker_cluster_ae8cd92f2f9d8a632267034a39722f76);
+        
+    
+        var popup_f9eaf9a119ca415c9bae58e4a325d56a = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_3dcc9bc6c69b1351680df89db561605e = $(`<div id="html_3dcc9bc6c69b1351680df89db561605e" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial; width: 300px;">         <h4 style="color: #8B0000;">Data Cívica</h4>         <p><strong>Estado:</strong> Ciudad de México</p>         <p><strong>Metodología:</strong><br>Scraping de datos abiertos, análisis estadístico y geolocalización</p>         <p><strong>Tipo de Datos:</strong><br>Mapa de alertas VG, tasas de feminicidios, dashboards comparativos ​</p>         <p><a href="avgmciudadana.datacivica.org ​" target="_blank">Ver fuente</a></p>     </div>     </div>`)[0];
+                popup_f9eaf9a119ca415c9bae58e4a325d56a.setContent(html_3dcc9bc6c69b1351680df89db561605e);
+            
+        
+
+        marker_4735599eb6386861889e2d9a51be0005.bindPopup(popup_f9eaf9a119ca415c9bae58e4a325d56a)
+        ;
+
+        
+    
+    
+            marker_4735599eb6386861889e2d9a51be0005.bindTooltip(
+                `<div>
+                     Data Cívica
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_c413cf1b9add4ad0ac20aa8319d6f3fc = L.marker(
+                [19.4326, -99.1332],
+                {
+}
+            ).addTo(marker_cluster_ae8cd92f2f9d8a632267034a39722f76);
+        
+    
+        var popup_0e59e00c8056625114c13437c1311a29 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_4a6b6f7608bf3843bd92d9c9139c9f6a = $(`<div id="html_4a6b6f7608bf3843bd92d9c9139c9f6a" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial; width: 300px;">         <h4 style="color: #8B0000;">Aquí estamos</h4>         <p><strong>Estado:</strong> Ciudad de México</p>         <p><strong>Metodología:</strong><br>Empleando el método de monitoreo de medios se recopila, sistematiza y analiza la información publicada por medios de comunicación de los 32 estados de la República Mexicana, sobre feminicidios de niñas y adolescentes.</p>         <p><strong>Tipo de Datos:</strong><br>mapa interactivo, notas informativas, entrevistas, informes</p>         <p><a href="https://feminicidioinfantil.com.mx/mapa-interactivo/" target="_blank">Ver fuente</a></p>     </div>     </div>`)[0];
+                popup_0e59e00c8056625114c13437c1311a29.setContent(html_4a6b6f7608bf3843bd92d9c9139c9f6a);
+            
+        
+
+        marker_c413cf1b9add4ad0ac20aa8319d6f3fc.bindPopup(popup_0e59e00c8056625114c13437c1311a29)
+        ;
+
+        
+    
+    
+            marker_c413cf1b9add4ad0ac20aa8319d6f3fc.bindTooltip(
+                `<div>
+                     Aquí estamos
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_8488fafb2800a2b15156a9dfb92b07d1 = L.marker(
+                [28.6329, -106.0691],
+                {
+}
+            ).addTo(marker_cluster_ae8cd92f2f9d8a632267034a39722f76);
+        
+    
+        var popup_9975f741507f9ede3e73d6f21ddb82ee = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_a7ff12e42dbd12089a0c25cb198feb97 = $(`<div id="html_a7ff12e42dbd12089a0c25cb198feb97" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial; width: 300px;">         <h4 style="color: #8B0000;">Centro para el Desarrollo Integral de la Mujer A.C.</h4>         <p><strong>Estado:</strong> Chihuahua</p>         <p><strong>Metodología:</strong><br>testimonios primarios directos de familiares, visibilizando impunidad desde 1995-2013 en casos emblemáticos</p>         <p><strong>Tipo de Datos:</strong><br>documentales, testimonios, fotografía de notas, vìctimas y familiares en sitio web</p>         <p><a href="https://juntasdenorteasur.com/centro-para-el-desarrollo-integral-de-la-mujer-cedimac-mexico/" target="_blank">Ver fuente</a></p>     </div>     </div>`)[0];
+                popup_9975f741507f9ede3e73d6f21ddb82ee.setContent(html_a7ff12e42dbd12089a0c25cb198feb97);
+            
+        
+
+        marker_8488fafb2800a2b15156a9dfb92b07d1.bindPopup(popup_9975f741507f9ede3e73d6f21ddb82ee)
+        ;
+
+        
+    
+    
+            marker_8488fafb2800a2b15156a9dfb92b07d1.bindTooltip(
+                `<div>
+                     Centro para el Desarrollo Integral de la Mujer A.C.
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_7ad7f1d9d2add131e518e242f273caf9 = L.marker(
+                [19.4326, -99.1332],
+                {
+}
+            ).addTo(marker_cluster_ae8cd92f2f9d8a632267034a39722f76);
+        
+    
+        var popup_5e12a8e90028e683c20983d4e9bd1e1e = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_3411ed60b2bae7c58510222b35c56801 = $(`<div id="html_3411ed60b2bae7c58510222b35c56801" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial; width: 300px;">         <h4 style="color: #8B0000;">No estamos todas</h4>         <p><strong>Estado:</strong> Ciudad de México</p>         <p><strong>Metodología:</strong><br>Memorial para las mujeres víctimas de violencia feminicida.</p>         <p><strong>Tipo de Datos:</strong><br>Ilustraciones de víctimas de feminicidio</p>         <p><a href="https://www.instagram.com/noestamostodas/" target="_blank">Ver fuente</a></p>     </div>     </div>`)[0];
+                popup_5e12a8e90028e683c20983d4e9bd1e1e.setContent(html_3411ed60b2bae7c58510222b35c56801);
+            
+        
+
+        marker_7ad7f1d9d2add131e518e242f273caf9.bindPopup(popup_5e12a8e90028e683c20983d4e9bd1e1e)
+        ;
+
+        
+    
+    
+            marker_7ad7f1d9d2add131e518e242f273caf9.bindTooltip(
+                `<div>
+                     No estamos todas
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_f6e0ff0bbbd6c5e75cd66a6fc9fd2f4f = L.marker(
+                [19.4326, -99.1332],
+                {
+}
+            ).addTo(marker_cluster_ae8cd92f2f9d8a632267034a39722f76);
+        
+    
+        var popup_26ec4543ca56d28267b243fffb33efaa = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_11039cc5cc00d02be2a1af1983a5a3d4 = $(`<div id="html_11039cc5cc00d02be2a1af1983a5a3d4" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial; width: 300px;">         <h4 style="color: #8B0000;">Marea Verde México</h4>         <p><strong>Estado:</strong> Ciudad de México</p>         <p><strong>Metodología:</strong><br>Monitoreo en movilizaciones y redes sociales</p>         <p><strong>Tipo de Datos:</strong><br>Listados de violencia y feminicidios en contexto activista ​</p>         <p><a href="Plataformas activistas ​" target="_blank">Ver fuente</a></p>     </div>     </div>`)[0];
+                popup_26ec4543ca56d28267b243fffb33efaa.setContent(html_11039cc5cc00d02be2a1af1983a5a3d4);
+            
+        
+
+        marker_f6e0ff0bbbd6c5e75cd66a6fc9fd2f4f.bindPopup(popup_26ec4543ca56d28267b243fffb33efaa)
+        ;
+
+        
+    
+    
+            marker_f6e0ff0bbbd6c5e75cd66a6fc9fd2f4f.bindTooltip(
+                `<div>
+                     Marea Verde México
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_bab7c205559e8e81e7529b0684f87e16 = L.marker(
+                [19.4326, -99.1332],
+                {
+}
+            ).addTo(marker_cluster_ae8cd92f2f9d8a632267034a39722f76);
+        
+    
+        var popup_9d1004124b9898a9bb59015c35fa7b9b = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_05e3e96e43c89c96f4cce8fa914ea492 = $(`<div id="html_05e3e96e43c89c96f4cce8fa914ea492" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial; width: 300px;">         <h4 style="color: #8B0000;">Tecnolochicas OSM/Técnicas Rudas</h4>         <p><strong>Estado:</strong> Ciudad de México</p>         <p><strong>Metodología:</strong><br>crearon un script en R para poder captar datos municipales de feminicidios de la estadística gubernamental, para así poder completar una base de datos en formato CSV y generar un archivo georreferenciado en formato GeoJSON. Estos datos oficiales, junto a los datos registrados por María Salguero y por Odesyr, se mapearon en la plataforma uMap (de OpenStreetMap):</p>         <p><strong>Tipo de Datos:</strong><br>Mapa interactivo, script en R para poder captar datos municipales de feminicidios de la estadística gubernamental, para así poder completar una base de datos en formato CSV y generar un archivo georreferenciado en formato GeoJSON</p>         <p><a href="https://gitlab.com/anamhoo/feminicidio https://umap.openstreetmap.co/en/map/feminicidio_mexico_2029#6/23.342/-96.218" target="_blank">Ver fuente</a></p>     </div>     </div>`)[0];
+                popup_9d1004124b9898a9bb59015c35fa7b9b.setContent(html_05e3e96e43c89c96f4cce8fa914ea492);
+            
+        
+
+        marker_bab7c205559e8e81e7529b0684f87e16.bindPopup(popup_9d1004124b9898a9bb59015c35fa7b9b)
+        ;
+
+        
+    
+    
+            marker_bab7c205559e8e81e7529b0684f87e16.bindTooltip(
+                `<div>
+                     Tecnolochicas OSM/Técnicas Rudas
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_7b51b335da260910b6e61b6a5fb52953 = L.marker(
+                [21.019, -101.2574],
+                {
+}
+            ).addTo(marker_cluster_ae8cd92f2f9d8a632267034a39722f76);
+        
+    
+        var popup_289e42c277e0f52c50045a24b6fb5bbf = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_e8b52fefda09b07f20bbf319be4fd6b7 = $(`<div id="html_e8b52fefda09b07f20bbf319be4fd6b7" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial; width: 300px;">         <h4 style="color: #8B0000;">La Alcantarilla</h4>         <p><strong>Estado:</strong> Guanajuato</p>         <p><strong>Metodología:</strong><br>Los homicidios y feminicidios documentados corresponden a cifras oficiales de la Fiscalía General del Estado y registro en notas periodísticas.</p>         <p><strong>Tipo de Datos:</strong><br>Mapa interactivo y nota periodística</p>         <p><a href="https://feminicidiosslp.com/" target="_blank">Ver fuente</a></p>     </div>     </div>`)[0];
+                popup_289e42c277e0f52c50045a24b6fb5bbf.setContent(html_e8b52fefda09b07f20bbf319be4fd6b7);
+            
+        
+
+        marker_7b51b335da260910b6e61b6a5fb52953.bindPopup(popup_289e42c277e0f52c50045a24b6fb5bbf)
+        ;
+
+        
+    
+    
+            marker_7b51b335da260910b6e61b6a5fb52953.bindTooltip(
+                `<div>
+                     La Alcantarilla
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_43a6e8de5e2f0263bc269be179eaabec = L.marker(
+                [28.6329, -106.0691],
+                {
+}
+            ).addTo(marker_cluster_ae8cd92f2f9d8a632267034a39722f76);
+        
+    
+        var popup_1c7d3356e51f9360d1e5d2a517b3891b = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_0acf3a29d0491eab8c8f5cdec7659513 = $(`<div id="html_0acf3a29d0491eab8c8f5cdec7659513" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial; width: 300px;">         <h4 style="color: #8B0000;">Centro de Derechos Humanos de las Mujeres (Cedehm)</h4>         <p><strong>Estado:</strong> Chihuahua</p>         <p><strong>Metodología:</strong><br>acompañamiento de mujeres, sus hijos e hijas víctimas de violencia de género, defensora de derechos humano</p>         <p><strong>Tipo de Datos:</strong><br>asesoría y representación legal, incidencia y sensibilización, denuncia y visibilización</p>         <p><a href="https://cedehm.org.mx/es/" target="_blank">Ver fuente</a></p>     </div>     </div>`)[0];
+                popup_1c7d3356e51f9360d1e5d2a517b3891b.setContent(html_0acf3a29d0491eab8c8f5cdec7659513);
+            
+        
+
+        marker_43a6e8de5e2f0263bc269be179eaabec.bindPopup(popup_1c7d3356e51f9360d1e5d2a517b3891b)
+        ;
+
+        
+    
+    
+            marker_43a6e8de5e2f0263bc269be179eaabec.bindTooltip(
+                `<div>
+                     Centro de Derechos Humanos de las Mujeres (Cedehm)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_b2debc90ebd0033e957b5654a4ba5a7b = L.marker(
+                [19.4326, -99.1332],
+                {
+}
+            ).addTo(marker_cluster_ae8cd92f2f9d8a632267034a39722f76);
+        
+    
+        var popup_5a00ae184649899a13d5d5a844d28f81 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_acee30c9016022ec6c4e13ab2b892453 = $(`<div id="html_acee30c9016022ec6c4e13ab2b892453" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial; width: 300px;">         <h4 style="color: #8B0000;">MAPA DE FEMINICIDIOS EN MÉXICO (Proyecto independiente)</h4>         <p><strong>Estado:</strong> Ciudad de México</p>         <p><strong>Metodología:</strong><br>Monitoreo exhaustivo de prensa digital nacional y local. Verificación cruzada con fuentes oficiales y notas posteriores.</p>         <p><strong>Tipo de Datos:</strong><br>Mapa interactivo actualizado casi en tiempo real. Filtros por estado, edad, modalidad. Base de datos descargable (formato .csv).</p>         <p><a href="🔗 Mapa de Feminicidios" target="_blank">Ver fuente</a></p>     </div>     </div>`)[0];
+                popup_5a00ae184649899a13d5d5a844d28f81.setContent(html_acee30c9016022ec6c4e13ab2b892453);
+            
+        
+
+        marker_b2debc90ebd0033e957b5654a4ba5a7b.bindPopup(popup_5a00ae184649899a13d5d5a844d28f81)
+        ;
+
+        
+    
+    
+            marker_b2debc90ebd0033e957b5654a4ba5a7b.bindTooltip(
+                `<div>
+                     MAPA DE FEMINICIDIOS EN MÉXICO (Proyecto independiente)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_f6adb11c323d733938b2056bc53d226a = L.marker(
+                [28.6329, -106.0691],
+                {
+}
+            ).addTo(marker_cluster_ae8cd92f2f9d8a632267034a39722f76);
+        
+    
+        var popup_9dd626d5d9fc4a94a973bd8ead893e9b = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_b2d0732735e03eada77cc71bc2189fd7 = $(`<div id="html_b2d0732735e03eada77cc71bc2189fd7" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial; width: 300px;">         <h4 style="color: #8B0000;">Asamblea Feminista del Estado de Chihuahua (AFECH)</h4>         <p><strong>Estado:</strong> Chihuahua</p>         <p><strong>Metodología:</strong><br>Metodología de "registro comunitario": prensa, redes sociales, testimonios directos de familias y observación en campo.</p>         <p><strong>Tipo de Datos:</strong><br>exige justicia y alto a la impunidad por feminicidios y desapariciones, denunciando omisión gubernamental, negligencia de la Fiscalía y violencia de género.</p>         <p><a href="https://www.facebook.com/p/Asamblea-Feminista-del-Estado-de-Chihuahua-AFECH-100072406154689/" target="_blank">Ver fuente</a></p>     </div>     </div>`)[0];
+                popup_9dd626d5d9fc4a94a973bd8ead893e9b.setContent(html_b2d0732735e03eada77cc71bc2189fd7);
+            
+        
+
+        marker_f6adb11c323d733938b2056bc53d226a.bindPopup(popup_9dd626d5d9fc4a94a973bd8ead893e9b)
+        ;
+
+        
+    
+    
+            marker_f6adb11c323d733938b2056bc53d226a.bindTooltip(
+                `<div>
+                     Asamblea Feminista del Estado de Chihuahua (AFECH)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_35229fc0448aabc23343c3077a424fb5 = L.marker(
+                [17.0732, -96.7266],
+                {
+}
+            ).addTo(marker_cluster_ae8cd92f2f9d8a632267034a39722f76);
+        
+    
+        var popup_d945df495b1dcaf7bbd8a1682270805b = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_5e2eb08ce8d94817f07df70e6deaa84c = $(`<div id="html_5e2eb08ce8d94817f07df70e6deaa84c" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial; width: 300px;">         <h4 style="color: #8B0000;">Observatorio de Feminicidio del Grupo de estudios sobre la mujer “Rosario Castellanos» A.C. (GESMujer)</h4>         <p><strong>Estado:</strong> Oaxaca</p>         <p><strong>Metodología:</strong><br>La cartografía del feminicidio en Oaxaca por GESMujer (mapeo de feminicidios) fue desarrollado bajo la tecnología de Google Maps, haciendo uso de las capas municipales del INEGI y el registro y seguimiento de cada caso en la entidad oaxaqueña, mismos que han sido publicados en los medios de comunicación locales impresos y digitales.</p>         <p><strong>Tipo de Datos:</strong><br>Mapa interactivo, filtros por año, y tablas con datos</p>         <p><a href="https://www.gesmujer.org/sitio/monitoreo-de-violencia-feminicida-en-oaxaca/?v=6ee8cb899cf7" target="_blank">Ver fuente</a></p>     </div>     </div>`)[0];
+                popup_d945df495b1dcaf7bbd8a1682270805b.setContent(html_5e2eb08ce8d94817f07df70e6deaa84c);
+            
+        
+
+        marker_35229fc0448aabc23343c3077a424fb5.bindPopup(popup_d945df495b1dcaf7bbd8a1682270805b)
+        ;
+
+        
+    
+    
+            marker_35229fc0448aabc23343c3077a424fb5.bindTooltip(
+                `<div>
+                     Observatorio de Feminicidio del Grupo de estudios sobre la mujer “Rosario Castellanos» A.C. (GESMujer)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_e2e80320cf29d4187aca693d770e8e2b = L.marker(
+                [17.0732, -96.7266],
+                {
+}
+            ).addTo(marker_cluster_ae8cd92f2f9d8a632267034a39722f76);
+        
+    
+        var popup_ddf4eedc96f262988d17fc8d5e56382f = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_2f64ec8e4c1b8075199fcf4904c3fbd2 = $(`<div id="html_2f64ec8e4c1b8075199fcf4904c3fbd2" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial; width: 300px;">         <h4 style="color: #8B0000;">Colectivo Huaxcayac/Consorcio Oaxaca</h4>         <p><strong>Estado:</strong> Oaxaca</p>         <p><strong>Metodología:</strong><br>feminicidios registrados por el Colectivo Huaxyacac a partir de 2004 ─año en que el comenzó a documentarse la violencia feminicida en el estado ─ a diciembre de 2019.</p>         <p><strong>Tipo de Datos:</strong><br>Base de datos, informes</p>         <p><a href="https://violenciafeminicida.consorciooaxaca.org.mx/feminicidio" target="_blank">Ver fuente</a></p>     </div>     </div>`)[0];
+                popup_ddf4eedc96f262988d17fc8d5e56382f.setContent(html_2f64ec8e4c1b8075199fcf4904c3fbd2);
+            
+        
+
+        marker_e2e80320cf29d4187aca693d770e8e2b.bindPopup(popup_ddf4eedc96f262988d17fc8d5e56382f)
+        ;
+
+        
+    
+    
+            marker_e2e80320cf29d4187aca693d770e8e2b.bindTooltip(
+                `<div>
+                     Colectivo Huaxcayac/Consorcio Oaxaca
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_49490a29c4145b5d256d1ad8d7a53d30 = L.marker(
+                [19.7068, -101.1943],
+                {
+}
+            ).addTo(marker_cluster_ae8cd92f2f9d8a632267034a39722f76);
+        
+    
+        var popup_3ca47eb0acf2d44372783f715c48838f = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_a28b9444577ad5d323113cb3b73186e0 = $(`<div id="html_a28b9444577ad5d323113cb3b73186e0" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial; width: 300px;">         <h4 style="color: #8B0000;">Humanas sin Violencia A.C.</h4>         <p><strong>Estado:</strong> Michoacán</p>         <p><strong>Metodología:</strong><br>Monitoreo de alertas VG y llamadas de emergencia ​</p>         <p><strong>Tipo de Datos:</strong><br>Bases de impunidad y reportes anuales ​</p>         <p><a href="https://rutasparafortalecer.org/osc/humanas-sin-violencia-a-c/" target="_blank">Ver fuente</a></p>     </div>     </div>`)[0];
+                popup_3ca47eb0acf2d44372783f715c48838f.setContent(html_a28b9444577ad5d323113cb3b73186e0);
+            
+        
+
+        marker_49490a29c4145b5d256d1ad8d7a53d30.bindPopup(popup_3ca47eb0acf2d44372783f715c48838f)
+        ;
+
+        
+    
+    
+            marker_49490a29c4145b5d256d1ad8d7a53d30.bindTooltip(
+                `<div>
+                     Humanas sin Violencia A.C.
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_2df568d62566dd67adffb60795c6b3c8 = L.marker(
+                [28.6329, -106.0691],
+                {
+}
+            ).addTo(marker_cluster_ae8cd92f2f9d8a632267034a39722f76);
+        
+    
+        var popup_f97403e02205ed790419e0646a6293c1 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_c835ed2c43026c165d1733d1a619972b = $(`<div id="html_c835ed2c43026c165d1733d1a619972b" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial; width: 300px;">         <h4 style="color: #8B0000;">Mesa de Mujeres</h4>         <p><strong>Estado:</strong> Chihuahua</p>         <p><strong>Metodología:</strong><br>Documentación desde 1993, etnografías de campo algodonero ​</p>         <p><strong>Tipo de Datos:</strong><br>Informes de impunidad (98%), llamados a justicia ​</p>         <p><a href="http://mesademujeresjuarez.org/linea/" target="_blank">Ver fuente</a></p>     </div>     </div>`)[0];
+                popup_f97403e02205ed790419e0646a6293c1.setContent(html_c835ed2c43026c165d1733d1a619972b);
+            
+        
+
+        marker_2df568d62566dd67adffb60795c6b3c8.bindPopup(popup_f97403e02205ed790419e0646a6293c1)
+        ;
+
+        
+    
+    
+            marker_2df568d62566dd67adffb60795c6b3c8.bindTooltip(
+                `<div>
+                     Mesa de Mujeres
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_ac69859b0da5600a52318f45f5edccd4 = L.marker(
+                [19.0414, -98.2063],
+                {
+}
+            ).addTo(marker_cluster_ae8cd92f2f9d8a632267034a39722f76);
+        
+    
+        var popup_acf2defbf2e8ebcacdb704b50719305d = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_f10a82592d8fd3784b05fa969282b00b = $(`<div id="html_f10a82592d8fd3784b05fa969282b00b" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial; width: 300px;">         <h4 style="color: #8B0000;">Observatorio de Derechos Sexuales y Reproductivos (Odesyr)</h4>         <p><strong>Estado:</strong> Puebla</p>         <p><strong>Metodología:</strong><br>Conteo de feminicidio desde 2013 a 2020</p>         <p><strong>Tipo de Datos:</strong><br>Mapa interactivo</p>         <p><a href="https://www.google.com/maps/d/u/0/viewer?mid=1ggmdbYsvvK5uWuvL8sdfnz52Ims&hl=en_US&ll=19.13915480558778%2C-98.08653300910669&z=10" target="_blank">Ver fuente</a></p>     </div>     </div>`)[0];
+                popup_acf2defbf2e8ebcacdb704b50719305d.setContent(html_f10a82592d8fd3784b05fa969282b00b);
+            
+        
+
+        marker_ac69859b0da5600a52318f45f5edccd4.bindPopup(popup_acf2defbf2e8ebcacdb704b50719305d)
+        ;
+
+        
+    
+    
+            marker_ac69859b0da5600a52318f45f5edccd4.bindTooltip(
+                `<div>
+                     Observatorio de Derechos Sexuales y Reproductivos (Odesyr)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_c5e8e377364b6aa6524b61a203f783f8 = L.marker(
+                [18.9242, -99.2216],
+                {
+}
+            ).addTo(marker_cluster_ae8cd92f2f9d8a632267034a39722f76);
+        
+    
+        var popup_45dd7de172bb1133ef53a54d001ee503 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_b11684057ea9023d4abe038d0623931d = $(`<div id="html_b11684057ea9023d4abe038d0623931d" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial; width: 300px;">         <h4 style="color: #8B0000;">Divulvadoras</h4>         <p><strong>Estado:</strong> Morelos</p>         <p><strong>Metodología:</strong><br>Documentaciòn</p>         <p><strong>Tipo de Datos:</strong><br>performance, arte, manifestaciones, solicitudes a autoridades</p>         <p><a href="https://www.facebook.com/Divulvadorxs/?locale=es_LA" target="_blank">Ver fuente</a></p>     </div>     </div>`)[0];
+                popup_45dd7de172bb1133ef53a54d001ee503.setContent(html_b11684057ea9023d4abe038d0623931d);
+            
+        
+
+        marker_c5e8e377364b6aa6524b61a203f783f8.bindPopup(popup_45dd7de172bb1133ef53a54d001ee503)
+        ;
+
+        
+    
+    
+            marker_c5e8e377364b6aa6524b61a203f783f8.bindTooltip(
+                `<div>
+                     Divulvadoras
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_c30ff0b0a25f32ae9c9f8129f8ceee8c = L.marker(
+                [19.0414, -98.2063],
+                {
+}
+            ).addTo(marker_cluster_ae8cd92f2f9d8a632267034a39722f76);
+        
+    
+        var popup_cdbb84a95ad834064e6b08dc0da256bd = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_2406ff2c378bb9c45d61adcd30e088e9 = $(`<div id="html_2406ff2c378bb9c45d61adcd30e088e9" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial; width: 300px;">         <h4 style="color: #8B0000;">Observatorio de Violencia Social y de Género de Puebla</h4>         <p><strong>Estado:</strong> Puebla</p>         <p><strong>Metodología:</strong><br>Monitoreo de al menos 10 medios digitales locales, solicitudes de acceso a la información a fiscalía, y acompañamiento selectivo de casos.</p>         <p><strong>Tipo de Datos:</strong><br>Informes semestrales detallados, mapas de calor por municipio, boletines de prensa para incidir en políticas locales.</p>         <p><a href="https://www.iberopuebla.mx/IDHIE/OVSG" target="_blank">Ver fuente</a></p>     </div>     </div>`)[0];
+                popup_cdbb84a95ad834064e6b08dc0da256bd.setContent(html_2406ff2c378bb9c45d61adcd30e088e9);
+            
+        
+
+        marker_c30ff0b0a25f32ae9c9f8129f8ceee8c.bindPopup(popup_cdbb84a95ad834064e6b08dc0da256bd)
+        ;
+
+        
+    
+    
+            marker_c30ff0b0a25f32ae9c9f8129f8ceee8c.bindTooltip(
+                `<div>
+                     Observatorio de Violencia Social y de Género de Puebla
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_32505cb4fde7071ea702f44ec749d3cc = L.marker(
+                [21.019, -101.2574],
+                {
+}
+            ).addTo(marker_cluster_ae8cd92f2f9d8a632267034a39722f76);
+        
+    
+        var popup_c62afeb744a65f443d551db7d69c159e = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_9c256960c7f2a0254be8c0317689f7bf = $(`<div id="html_9c256960c7f2a0254be8c0317689f7bf" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial; width: 300px;">         <h4 style="color: #8B0000;">Mujeres Alertas</h4>         <p><strong>Estado:</strong> Guanajuato</p>         <p><strong>Metodología:</strong><br>Sobre la base de datos de Incidencia Delictiva Municipal desde 2015 hasta enero de 2025 proporcionada por el Secretariado Ejecutivo de Sistema Nacional de Seguridad Pública se desagregó la información del estado de Guanajuato</p>         <p><strong>Tipo de Datos:</strong><br>Mapa interactivo estatal, reportes, llamamiento a alerta de gènero</p>         <p><a href="https://www.mujeresalertas.mx/" target="_blank">Ver fuente</a></p>     </div>     </div>`)[0];
+                popup_c62afeb744a65f443d551db7d69c159e.setContent(html_9c256960c7f2a0254be8c0317689f7bf);
+            
+        
+
+        marker_32505cb4fde7071ea702f44ec749d3cc.bindPopup(popup_c62afeb744a65f443d551db7d69c159e)
+        ;
+
+        
+    
+    
+            marker_32505cb4fde7071ea702f44ec749d3cc.bindTooltip(
+                `<div>
+                     Mujeres Alertas
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_c40e8eb3df028ea82d14e47c3714498d = L.marker(
+                [28.6329, -106.0691],
+                {
+}
+            ).addTo(marker_cluster_ae8cd92f2f9d8a632267034a39722f76);
+        
+    
+        var popup_3f437154fff4a561d59442e5089a03ef = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_dd2b0711b26e7baeedb352b8c96ad672 = $(`<div id="html_dd2b0711b26e7baeedb352b8c96ad672" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial; width: 300px;">         <h4 style="color: #8B0000;">Ellas tienen nombre</h4>         <p><strong>Estado:</strong> Chihuahua</p>         <p><strong>Metodología:</strong><br>adopta una postura metodológica y política basada en la premisa de que todos los asesinatos de mujeres y niñas son feminicidios, a menos que las autoridades demuestren, a lo largo del tiempo, un compromiso sostenido con la realización de investigaciones serias, éticas y responsables, que produzcan pruebas claras, suficientes y verificables que indiquen lo contrario.</p>         <p><strong>Tipo de Datos:</strong><br>Mapa interactivo local</p>         <p><a href="https://www.ellastienennombre.org/map/" target="_blank">Ver fuente</a></p>     </div>     </div>`)[0];
+                popup_3f437154fff4a561d59442e5089a03ef.setContent(html_dd2b0711b26e7baeedb352b8c96ad672);
+            
+        
+
+        marker_c40e8eb3df028ea82d14e47c3714498d.bindPopup(popup_3f437154fff4a561d59442e5089a03ef)
+        ;
+
+        
+    
+    
+            marker_c40e8eb3df028ea82d14e47c3714498d.bindTooltip(
+                `<div>
+                     Ellas tienen nombre
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_a4eb04fbedb90ef70eb6ed580ba64282 = L.marker(
+                [19.4326, -99.1332],
+                {
+}
+            ).addTo(marker_cluster_ae8cd92f2f9d8a632267034a39722f76);
+        
+    
+        var popup_84600691f3318936a98903821d68f971 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_af7346e0c65281cca03423aaba88c082 = $(`<div id="html_af7346e0c65281cca03423aaba88c082" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial; width: 300px;">         <h4 style="color: #8B0000;">Artemisas por la Equidad A.C.</h4>         <p><strong>Estado:</strong> Ciudad de México</p>         <p><strong>Metodología:</strong><br>Monitoreo de medios locales, acompañamiento legal/psicológico a víctimas y validación de casos vía capacitaciones/familiares ​</p>         <p><strong>Tipo de Datos:</strong><br>Mapas interactivos de alertas VG (20 por feminicidio al 2021), conteos anuales (108 feminicidios 2019), informes de impunidad y jornadas asistenciales ​</p>         <p><a href="facebook.com/Arthemisas2007 ​" target="_blank">Ver fuente</a></p>     </div>     </div>`)[0];
+                popup_84600691f3318936a98903821d68f971.setContent(html_af7346e0c65281cca03423aaba88c082);
+            
+        
+
+        marker_a4eb04fbedb90ef70eb6ed580ba64282.bindPopup(popup_84600691f3318936a98903821d68f971)
+        ;
+
+        
+    
+    
+            marker_a4eb04fbedb90ef70eb6ed580ba64282.bindTooltip(
+                `<div>
+                     Artemisas por la Equidad A.C.
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_842258137a27c2aa0e741fe735b463f1 = L.marker(
+                [20.0911, -98.7624],
+                {
+}
+            ).addTo(marker_cluster_ae8cd92f2f9d8a632267034a39722f76);
+        
+    
+        var popup_5bbbd4321db3938939fe64e2a573d1e1 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_9087df8f6941fdb4f41256d3f9285768 = $(`<div id="html_9087df8f6941fdb4f41256d3f9285768" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial; width: 300px;">         <h4 style="color: #8B0000;">SEIINAC (Servicios de Inclusión Integral y Derechos Humanos A.C.)</h4>         <p><strong>Estado:</strong> Hidalgo</p>         <p><strong>Metodología:</strong><br>Monitoreo de medios locales, cruces con datos oficiales (PGJH/SESNSP) y análisis de impunidad en feminicidios ​</p>         <p><strong>Tipo de Datos:</strong><br>Informes anuales de muertes violentas de mujeres (54 en Hidalgo 2025), comparativos de subregistro, capacitaciones GESI para investigaciones ​</p>         <p><a href="x.com/SEIINAC, facebook.com/seiinac, seiinac.org.mx ​" target="_blank">Ver fuente</a></p>     </div>     </div>`)[0];
+                popup_5bbbd4321db3938939fe64e2a573d1e1.setContent(html_9087df8f6941fdb4f41256d3f9285768);
+            
+        
+
+        marker_842258137a27c2aa0e741fe735b463f1.bindPopup(popup_5bbbd4321db3938939fe64e2a573d1e1)
+        ;
+
+        
+    
+    
+            marker_842258137a27c2aa0e741fe735b463f1.bindTooltip(
+                `<div>
+                     SEIINAC (Servicios de Inclusión Integral y Derechos Humanos A.C.)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_79e9bcb0adcafba733b6a55d95c3279d = L.marker(
+                [19.4326, -99.1332],
+                {
+}
+            ).addTo(marker_cluster_ae8cd92f2f9d8a632267034a39722f76);
+        
+    
+        var popup_0e4613bdb152f29bbcb6123ef7f26763 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_eb9996bfcf56c4df6e5cd88c02c2c64f = $(`<div id="html_eb9996bfcf56c4df6e5cd88c02c2c64f" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial; width: 300px;">         <h4 style="color: #8B0000;">Católicas por el Derecho a Decidir</h4>         <p><strong>Estado:</strong> Ciudad de México</p>         <p><strong>Metodología:</strong><br>Análisis de políticas públicas, acompañamiento jurídico-espiritual a víctimas de violencia y monitoreo cualitativo de casos emblemáticos ​</p>         <p><strong>Tipo de Datos:</strong><br>Informes sobre derechos reproductivos vinculados a feminicidios, argumentos teológicos feministas, campañas contra impunidad en violencia de género ​</p>         <p><a href="catolicasmexico.org ​" target="_blank">Ver fuente</a></p>     </div>     </div>`)[0];
+                popup_0e4613bdb152f29bbcb6123ef7f26763.setContent(html_eb9996bfcf56c4df6e5cd88c02c2c64f);
+            
+        
+
+        marker_79e9bcb0adcafba733b6a55d95c3279d.bindPopup(popup_0e4613bdb152f29bbcb6123ef7f26763)
+        ;
+
+        
+    
+    
+            marker_79e9bcb0adcafba733b6a55d95c3279d.bindTooltip(
+                `<div>
+                     Católicas por el Derecho a Decidir
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_b5c66b19ed1e423277e0daf5360d381f = L.marker(
+                [19.4326, -99.1332],
+                {
+}
+            ).addTo(marker_cluster_ae8cd92f2f9d8a632267034a39722f76);
+        
+    
+        var popup_efa036e872da31703f9130ef1d7b1f14 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_fbd7da72ee919cec5a8eb9322986af3c = $(`<div id="html_fbd7da72ee919cec5a8eb9322986af3c" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial; width: 300px;">         <h4 style="color: #8B0000;">Observatorio de Justicia y Derechos Humanos de las Mujeres y las Niñas Red Mujer Siglo XXI</h4>         <p><strong>Estado:</strong> Ciudad de México</p>         <p><strong>Metodología:</strong><br>Análisis cualitativo de políticas y casos vía redes feministas ​</p>         <p><strong>Tipo de Datos:</strong><br>Informes de impunidad, posicionamientos colectivos ​</p>         <p><a href="redmujersigloxxi.org.mx ​" target="_blank">Ver fuente</a></p>     </div>     </div>`)[0];
+                popup_efa036e872da31703f9130ef1d7b1f14.setContent(html_fbd7da72ee919cec5a8eb9322986af3c);
+            
+        
+
+        marker_b5c66b19ed1e423277e0daf5360d381f.bindPopup(popup_efa036e872da31703f9130ef1d7b1f14)
+        ;
+
+        
+    
+    
+            marker_b5c66b19ed1e423277e0daf5360d381f.bindTooltip(
+                `<div>
+                     Observatorio de Justicia y Derechos Humanos de las Mujeres y las Niñas Red Mujer Siglo XXI
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_a9f45b83852a17b5fd02530451c61400 = L.marker(
+                [19.4326, -99.1332],
+                {
+}
+            ).addTo(marker_cluster_ae8cd92f2f9d8a632267034a39722f76);
+        
+    
+        var popup_5bf85b8fcf09032ca913a70b4659f298 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_8db1ca42c331b1956a2df9dfe060d204 = $(`<div id="html_8db1ca42c331b1956a2df9dfe060d204" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial; width: 300px;">         <h4 style="color: #8B0000;">Cátedra Unesco de la UNAM</h4>         <p><strong>Estado:</strong> Ciudad de México</p>         <p><strong>Metodología:</strong><br>Investigación académica con datos abiertos y etnografías ​</p>         <p><strong>Tipo de Datos:</strong><br>Estudios teóricos sobre feminicidio como crimen de Estado ​</p>         <p><a href="unesco.unam.mx ​" target="_blank">Ver fuente</a></p>     </div>     </div>`)[0];
+                popup_5bf85b8fcf09032ca913a70b4659f298.setContent(html_8db1ca42c331b1956a2df9dfe060d204);
+            
+        
+
+        marker_a9f45b83852a17b5fd02530451c61400.bindPopup(popup_5bf85b8fcf09032ca913a70b4659f298)
+        ;
+
+        
+    
+    
+            marker_a9f45b83852a17b5fd02530451c61400.bindTooltip(
+                `<div>
+                     Cátedra Unesco de la UNAM
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_179de916478d490311f3084fa76d7e2a = L.marker(
+                [19.2823, -99.6557],
+                {
+}
+            ).addTo(marker_cluster_ae8cd92f2f9d8a632267034a39722f76);
+        
+    
+        var popup_b2589ce8e07e7927fedf1870b6db2e04 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_66589df97e036c5ac5075af31d7d1a90 = $(`<div id="html_66589df97e036c5ac5075af31d7d1a90" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial; width: 300px;">         <h4 style="color: #8B0000;">Justicia Pro-Persona A.C.</h4>         <p><strong>Estado:</strong> Estado de México</p>         <p><strong>Metodología:</strong><br>Monitoreo judicial y litigios estratégicos ​</p>         <p><strong>Tipo de Datos:</strong><br>Reportes de impunidad en feminicidios locales ​</p>         <p><a href="justicepropersona.org ​" target="_blank">Ver fuente</a></p>     </div>     </div>`)[0];
+                popup_b2589ce8e07e7927fedf1870b6db2e04.setContent(html_66589df97e036c5ac5075af31d7d1a90);
+            
+        
+
+        marker_179de916478d490311f3084fa76d7e2a.bindPopup(popup_b2589ce8e07e7927fedf1870b6db2e04)
+        ;
+
+        
+    
+    
+            marker_179de916478d490311f3084fa76d7e2a.bindTooltip(
+                `<div>
+                     Justicia Pro-Persona A.C.
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_cb220352d9af570b175b6ad6c9b0c7fa = L.marker(
+                [19.2823, -99.6557],
+                {
+}
+            ).addTo(marker_cluster_ae8cd92f2f9d8a632267034a39722f76);
+        
+    
+        var popup_08a71451b99964e0c424c55b5da88c1b = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_715b67c3e1ac5aa4e4d2659c23e3d59b = $(`<div id="html_715b67c3e1ac5aa4e4d2659c23e3d59b" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial; width: 300px;">         <h4 style="color: #8B0000;">Red de promotoras de Ecatepec Familiares en búsqueda de Justicia</h4>         <p><strong>Estado:</strong> Estado de México </p>         <p><strong>Metodología:</strong><br>Acompañamiento familiar y cruces con medios ​</p>         <p><strong>Tipo de Datos:</strong><br>Listas de casos emblemáticos, alertas comunitarias ​</p>         <p><a href="Directorios locales ​" target="_blank">Ver fuente</a></p>     </div>     </div>`)[0];
+                popup_08a71451b99964e0c424c55b5da88c1b.setContent(html_715b67c3e1ac5aa4e4d2659c23e3d59b);
+            
+        
+
+        marker_cb220352d9af570b175b6ad6c9b0c7fa.bindPopup(popup_08a71451b99964e0c424c55b5da88c1b)
+        ;
+
+        
+    
+    
+            marker_cb220352d9af570b175b6ad6c9b0c7fa.bindTooltip(
+                `<div>
+                     Red de promotoras de Ecatepec Familiares en búsqueda de Justicia
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_f1b5e00979222166d66ca8cdbc4497c0 = L.marker(
+                [21.019, -101.2574],
+                {
+}
+            ).addTo(marker_cluster_ae8cd92f2f9d8a632267034a39722f76);
+        
+    
+        var popup_0cd0c4268b7356f04ad810e5a46cfaa1 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_d35cc40291a2f852e6afab2d7eb1f9bf = $(`<div id="html_d35cc40291a2f852e6afab2d7eb1f9bf" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial; width: 300px;">         <h4 style="color: #8B0000;">Centro de Derechos Humanos "Victoria Diez"</h4>         <p><strong>Estado:</strong> Guanajuato</p>         <p><strong>Metodología:</strong><br>Seguimiento de carpetas judiciales y medios estatales ​</p>         <p><strong>Tipo de Datos:</strong><br>Informes anuales de violencia de género ​</p>         <p><a href="cdhavd.org.mx ​" target="_blank">Ver fuente</a></p>     </div>     </div>`)[0];
+                popup_0cd0c4268b7356f04ad810e5a46cfaa1.setContent(html_d35cc40291a2f852e6afab2d7eb1f9bf);
+            
+        
+
+        marker_f1b5e00979222166d66ca8cdbc4497c0.bindPopup(popup_0cd0c4268b7356f04ad810e5a46cfaa1)
+        ;
+
+        
+    
+    
+            marker_f1b5e00979222166d66ca8cdbc4497c0.bindTooltip(
+                `<div>
+                     Centro de Derechos Humanos "Victoria Diez"
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_2ad76957f5c7cc3b3305b6eaecd3daab = L.marker(
+                [19.4326, -99.1332],
+                {
+}
+            ).addTo(marker_cluster_ae8cd92f2f9d8a632267034a39722f76);
+        
+    
+        var popup_26a3357081fdd098980701fcccb9ef95 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_203b9481fc01f55265547d5fcb78d038 = $(`<div id="html_203b9481fc01f55265547d5fcb78d038" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial; width: 300px;">         <h4 style="color: #8B0000;">Comité de América Latina y el Caribe para la Defensa de los Derechos de la Mujer (CLADEM-México)</h4>         <p><strong>Estado:</strong> Ciudad de México</p>         <p><strong>Metodología:</strong><br>Análisis comparativo regional y talleres ​</p>         <p><strong>Tipo de Datos:</strong><br>Reportes LAC sobre feminicidios México ​</p>         <p><a href="clademmexico.org ​" target="_blank">Ver fuente</a></p>     </div>     </div>`)[0];
+                popup_26a3357081fdd098980701fcccb9ef95.setContent(html_203b9481fc01f55265547d5fcb78d038);
+            
+        
+
+        marker_2ad76957f5c7cc3b3305b6eaecd3daab.bindPopup(popup_26a3357081fdd098980701fcccb9ef95)
+        ;
+
+        
+    
+    
+            marker_2ad76957f5c7cc3b3305b6eaecd3daab.bindTooltip(
+                `<div>
+                     Comité de América Latina y el Caribe para la Defensa de los Derechos de la Mujer (CLADEM-México)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_8ee57928d03bd11018969e5054545029 = L.marker(
+                [18.9242, -99.2216],
+                {
+}
+            ).addTo(marker_cluster_ae8cd92f2f9d8a632267034a39722f76);
+        
+    
+        var popup_b27b87a077471ec1b20749db3a65d009 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_06b913063b2123ed697caa29052a9fb5 = $(`<div id="html_06b913063b2123ed697caa29052a9fb5" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial; width: 300px;">         <h4 style="color: #8B0000;">Academia, Litigio Estratégico e Incidencia en Derechos Humanos, A.C.</h4>         <p><strong>Estado:</strong> Morelos</p>         <p><strong>Metodología:</strong><br>Litigios y monitoreo de alertas VG ​</p>         <p><strong>Tipo de Datos:</strong><br>Bases de impunidad judicial ​</p>         <p><a href="aliedh.org.mx ​" target="_blank">Ver fuente</a></p>     </div>     </div>`)[0];
+                popup_b27b87a077471ec1b20749db3a65d009.setContent(html_06b913063b2123ed697caa29052a9fb5);
+            
+        
+
+        marker_8ee57928d03bd11018969e5054545029.bindPopup(popup_b27b87a077471ec1b20749db3a65d009)
+        ;
+
+        
+    
+    
+            marker_8ee57928d03bd11018969e5054545029.bindTooltip(
+                `<div>
+                     Academia, Litigio Estratégico e Incidencia en Derechos Humanos, A.C.
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_997b57a8d8095c427d90c8d313a5ee24 = L.marker(
+                [17.0732, -96.7266],
+                {
+}
+            ).addTo(marker_cluster_ae8cd92f2f9d8a632267034a39722f76);
+        
+    
+        var popup_8b3049230dea9e1f3aadb151d7cdb34c = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_a487adc2cae63aa6a4f90412c89ee4da = $(`<div id="html_a487adc2cae63aa6a4f90412c89ee4da" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial; width: 300px;">         <h4 style="color: #8B0000;">Centro de Derechos Humanos YURENI A.C.</h4>         <p><strong>Estado:</strong> Oaxaca</p>         <p><strong>Metodología:</strong><br>Registro comunitario indígena y visitas campo ​</p>         <p><strong>Tipo de Datos:</strong><br>Informes violencia rural, guías locales ​</p>         <p><a href="yureni.org ​" target="_blank">Ver fuente</a></p>     </div>     </div>`)[0];
+                popup_8b3049230dea9e1f3aadb151d7cdb34c.setContent(html_a487adc2cae63aa6a4f90412c89ee4da);
+            
+        
+
+        marker_997b57a8d8095c427d90c8d313a5ee24.bindPopup(popup_8b3049230dea9e1f3aadb151d7cdb34c)
+        ;
+
+        
+    
+    
+            marker_997b57a8d8095c427d90c8d313a5ee24.bindTooltip(
+                `<div>
+                     Centro de Derechos Humanos YURENI A.C.
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_05479ac398043166c6e06d082fb4167c = L.marker(
+                [17.0732, -96.7266],
+                {
+}
+            ).addTo(marker_cluster_ae8cd92f2f9d8a632267034a39722f76);
+        
+    
+        var popup_a2eccfdbd0fda781caba75e4c5edcf89 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_416f1e580f9bfd28294d3d2b4c508874 = $(`<div id="html_416f1e580f9bfd28294d3d2b4c508874" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial; width: 300px;">         <h4 style="color: #8B0000;">Colectivo Bolivariano</h4>         <p><strong>Estado:</strong> Oaxaca</p>         <p><strong>Metodología:</strong><br>Acompañamiento migrantes y feminicidios transfronterizos ​</p>         <p><strong>Tipo de Datos:</strong><br>Testimonios casos migrantes ​</p>         <p><a href="Colectivos Oaxaca ​" target="_blank">Ver fuente</a></p>     </div>     </div>`)[0];
+                popup_a2eccfdbd0fda781caba75e4c5edcf89.setContent(html_416f1e580f9bfd28294d3d2b4c508874);
+            
+        
+
+        marker_05479ac398043166c6e06d082fb4167c.bindPopup(popup_a2eccfdbd0fda781caba75e4c5edcf89)
+        ;
+
+        
+    
+    
+            marker_05479ac398043166c6e06d082fb4167c.bindTooltip(
+                `<div>
+                     Colectivo Bolivariano
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_2278a97cc2ee1c31789c45c761215d28 = L.marker(
+                [17.0732, -96.7266],
+                {
+}
+            ).addTo(marker_cluster_ae8cd92f2f9d8a632267034a39722f76);
+        
+    
+        var popup_f2857775ff49967d5e14a03e2f094026 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_a1366cec7c25542e57bbc6c2b13a256e = $(`<div id="html_a1366cec7c25542e57bbc6c2b13a256e" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial; width: 300px;">         <h4 style="color: #8B0000;">Comisión de Derechos Humanos Mahatma Gandhi</h4>         <p><strong>Estado:</strong> Oaxaca</p>         <p><strong>Metodología:</strong><br>Monitoreo defensoras y alertas VG ​</p>         <p><strong>Tipo de Datos:</strong><br>Reportes anuales Oaxaca ​</p>         <p><a href="cdmgandhi.org ​" target="_blank">Ver fuente</a></p>     </div>     </div>`)[0];
+                popup_f2857775ff49967d5e14a03e2f094026.setContent(html_a1366cec7c25542e57bbc6c2b13a256e);
+            
+        
+
+        marker_2278a97cc2ee1c31789c45c761215d28.bindPopup(popup_f2857775ff49967d5e14a03e2f094026)
+        ;
+
+        
+    
+    
+            marker_2278a97cc2ee1c31789c45c761215d28.bindTooltip(
+                `<div>
+                     Comisión de Derechos Humanos Mahatma Gandhi
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_a7c4cddfffb4d7e94f62a312c0f04bef = L.marker(
+                [17.0732, -96.7266],
+                {
+}
+            ).addTo(marker_cluster_ae8cd92f2f9d8a632267034a39722f76);
+        
+    
+        var popup_f938cfb32d81c1058884d5b06bd2c7ff = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_4d19f155cb9bc18d40a47f4118a19b8b = $(`<div id="html_4d19f155cb9bc18d40a47f4118a19b8b" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial; width: 300px;">         <h4 style="color: #8B0000;">Consorcio para el Diálogo Parlamentario y la Equidad Oaxaca</h4>         <p><strong>Estado:</strong> Oaxaca</p>         <p><strong>Metodología:</strong><br>Incidencia legislativa con datos locales ​</p>         <p><strong>Tipo de Datos:</strong><br>Estudios equidad de género ​</p>         <p><a href="consorcioequidad.org ​" target="_blank">Ver fuente</a></p>     </div>     </div>`)[0];
+                popup_f938cfb32d81c1058884d5b06bd2c7ff.setContent(html_4d19f155cb9bc18d40a47f4118a19b8b);
+            
+        
+
+        marker_a7c4cddfffb4d7e94f62a312c0f04bef.bindPopup(popup_f938cfb32d81c1058884d5b06bd2c7ff)
+        ;
+
+        
+    
+    
+            marker_a7c4cddfffb4d7e94f62a312c0f04bef.bindTooltip(
+                `<div>
+                     Consorcio para el Diálogo Parlamentario y la Equidad Oaxaca
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_e034117f0edf001d47cec1cf3fc2acba = L.marker(
+                [17.0732, -96.7266],
+                {
+}
+            ).addTo(marker_cluster_ae8cd92f2f9d8a632267034a39722f76);
+        
+    
+        var popup_4c95e910fe3b262514791bea550431bd = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_66c8666fa6d25a7a618dc07dcea3e96d = $(`<div id="html_66c8666fa6d25a7a618dc07dcea3e96d" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial; width: 300px;">         <h4 style="color: #8B0000;">Programa de Género del Instituto de Derechos Humanos Ignacio Ellacuría SJ</h4>         <p><strong>Estado:</strong> Oaxaca</p>         <p><strong>Metodología:</strong><br>Análisis académico-jesuita ​</p>         <p><strong>Tipo de Datos:</strong><br>Publicaciones género-violencia ​</p>         <p><a href="uia.mx ​" target="_blank">Ver fuente</a></p>     </div>     </div>`)[0];
+                popup_4c95e910fe3b262514791bea550431bd.setContent(html_66c8666fa6d25a7a618dc07dcea3e96d);
+            
+        
+
+        marker_e034117f0edf001d47cec1cf3fc2acba.bindPopup(popup_4c95e910fe3b262514791bea550431bd)
+        ;
+
+        
+    
+    
+            marker_e034117f0edf001d47cec1cf3fc2acba.bindTooltip(
+                `<div>
+                     Programa de Género del Instituto de Derechos Humanos Ignacio Ellacuría SJ
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_f8ac8583952436b854e203c39431c36b = L.marker(
+                [19.0414, -98.2063],
+                {
+}
+            ).addTo(marker_cluster_ae8cd92f2f9d8a632267034a39722f76);
+        
+    
+        var popup_3614fcdd8863348ed878bfd6b64dde94 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_3e0e3370adfe0875f153fb0d32fcbede = $(`<div id="html_3e0e3370adfe0875f153fb0d32fcbede" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial; width: 300px;">         <h4 style="color: #8B0000;">Centro de Integración y Participación Social desde la Equidad</h4>         <p><strong>Estado:</strong> Puebla</p>         <p><strong>Metodología:</strong><br>Sensibilización comunitaria y conteos ​</p>         <p><strong>Tipo de Datos:</strong><br>Informes municipales Puebla ​</p>         <p><a href="cipsequidad.org ​" target="_blank">Ver fuente</a></p>     </div>     </div>`)[0];
+                popup_3614fcdd8863348ed878bfd6b64dde94.setContent(html_3e0e3370adfe0875f153fb0d32fcbede);
+            
+        
+
+        marker_f8ac8583952436b854e203c39431c36b.bindPopup(popup_3614fcdd8863348ed878bfd6b64dde94)
+        ;
+
+        
+    
+    
+            marker_f8ac8583952436b854e203c39431c36b.bindTooltip(
+                `<div>
+                     Centro de Integración y Participación Social desde la Equidad
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_2bea073f30aa22312ee86a6f343e114f = L.marker(
+                [21.1619, -86.8515],
+                {
+}
+            ).addTo(marker_cluster_ae8cd92f2f9d8a632267034a39722f76);
+        
+    
+        var popup_8e070e515454ca4d2f7c978be874ba94 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_c3e6a342aad37d49491cc573fa58a285 = $(`<div id="html_c3e6a342aad37d49491cc573fa58a285" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial; width: 300px;">         <h4 style="color: #8B0000;">Maya sin Fronteras A.C.</h4>         <p><strong>Estado:</strong> Quintana Roo</p>         <p><strong>Metodología:</strong><br>Registro indígenas/migrantes ​</p>         <p><strong>Tipo de Datos:</strong><br>Alertas sureste México ​</p>         <p><a href="mayasinfronteras.org ​" target="_blank">Ver fuente</a></p>     </div>     </div>`)[0];
+                popup_8e070e515454ca4d2f7c978be874ba94.setContent(html_c3e6a342aad37d49491cc573fa58a285);
+            
+        
+
+        marker_2bea073f30aa22312ee86a6f343e114f.bindPopup(popup_8e070e515454ca4d2f7c978be874ba94)
+        ;
+
+        
+    
+    
+            marker_2bea073f30aa22312ee86a6f343e114f.bindTooltip(
+                `<div>
+                     Maya sin Fronteras A.C.
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_0969185d4f8331a605015d2b4e73f761 = L.marker(
+                [24.8045, -107.3948],
+                {
+}
+            ).addTo(marker_cluster_ae8cd92f2f9d8a632267034a39722f76);
+        
+    
+        var popup_1cc2f2fc4d449e24756ae362592e4692 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_eb260de6520228c8090ab27392bff3d5 = $(`<div id="html_eb260de6520228c8090ab27392bff3d5" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial; width: 300px;">         <h4 style="color: #8B0000;">Asociación Sinaloense de Universitarias, A.C.</h4>         <p><strong>Estado:</strong> Sinaloa</p>         <p><strong>Metodología:</strong><br>Monitoreo académico-estatal ​</p>         <p><strong>Tipo de Datos:</strong><br>Conteos 15+ anuales Sinaloa ​</p>         <p><a href="asusinaloa.org ​" target="_blank">Ver fuente</a></p>     </div>     </div>`)[0];
+                popup_1cc2f2fc4d449e24756ae362592e4692.setContent(html_eb260de6520228c8090ab27392bff3d5);
+            
+        
+
+        marker_0969185d4f8331a605015d2b4e73f761.bindPopup(popup_1cc2f2fc4d449e24756ae362592e4692)
+        ;
+
+        
+    
+    
+            marker_0969185d4f8331a605015d2b4e73f761.bindTooltip(
+                `<div>
+                     Asociación Sinaloense de Universitarias, A.C.
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_0fb2f0af32f10f993a2475687f073356 = L.marker(
+                [24.8045, -107.3948],
+                {
+}
+            ).addTo(marker_cluster_ae8cd92f2f9d8a632267034a39722f76);
+        
+    
+        var popup_c41a49c770c9bab7c6c9e9b7ee2e651c = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_89cdf59c79597de71d728fa85fc97c83 = $(`<div id="html_89cdf59c79597de71d728fa85fc97c83" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial; width: 300px;">         <h4 style="color: #8B0000;">Frente Cívico Sinaloense</h4>         <p><strong>Estado:</strong> Sinaloa</p>         <p><strong>Metodología:</strong><br>Protestas y cruces datos ​</p>         <p><strong>Tipo de Datos:</strong><br>Posicionamientos impunidad ​</p>         <p><a href="frentecivico.org ​" target="_blank">Ver fuente</a></p>     </div>     </div>`)[0];
+                popup_c41a49c770c9bab7c6c9e9b7ee2e651c.setContent(html_89cdf59c79597de71d728fa85fc97c83);
+            
+        
+
+        marker_0fb2f0af32f10f993a2475687f073356.bindPopup(popup_c41a49c770c9bab7c6c9e9b7ee2e651c)
+        ;
+
+        
+    
+    
+            marker_0fb2f0af32f10f993a2475687f073356.bindTooltip(
+                `<div>
+                     Frente Cívico Sinaloense
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_8e6cf236f61e067f27c7c400428585b4 = L.marker(
+                [29.0892, -110.9613],
+                {
+}
+            ).addTo(marker_cluster_ae8cd92f2f9d8a632267034a39722f76);
+        
+    
+        var popup_d1f15db8a1aeca0601aae05163f7320d = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_eb2736c630b476c49cffe0a5c5363e51 = $(`<div id="html_eb2736c630b476c49cffe0a5c5363e51" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial; width: 300px;">         <h4 style="color: #8B0000;">Observatorio Ciudadano Nacional del Feminicidio Sonora (OCNF Sonora)</h4>         <p><strong>Estado:</strong> Sonora</p>         <p><strong>Metodología:</strong><br>Monitoreo medios/red OCNF ​</p>         <p><strong>Tipo de Datos:</strong><br>Mapas Sonora, informes OCNF ​</p>         <p><a href="observatoriofeminicidiomexico.org ​" target="_blank">Ver fuente</a></p>     </div>     </div>`)[0];
+                popup_d1f15db8a1aeca0601aae05163f7320d.setContent(html_eb2736c630b476c49cffe0a5c5363e51);
+            
+        
+
+        marker_8e6cf236f61e067f27c7c400428585b4.bindPopup(popup_d1f15db8a1aeca0601aae05163f7320d)
+        ;
+
+        
+    
+    
+            marker_8e6cf236f61e067f27c7c400428585b4.bindTooltip(
+                `<div>
+                     Observatorio Ciudadano Nacional del Feminicidio Sonora (OCNF Sonora)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_58f7b736471da0db07887ebca5aae752 = L.marker(
+                [17.9895, -92.9476],
+                {
+}
+            ).addTo(marker_cluster_ae8cd92f2f9d8a632267034a39722f76);
+        
+    
+        var popup_9f338000675705e1585056fc08dfe123 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_573f8d00623a7fd654284041b79a01b7 = $(`<div id="html_573f8d00623a7fd654284041b79a01b7" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial; width: 300px;">         <h4 style="color: #8B0000;">Asociación Ecológica Santo Tomás</h4>         <p><strong>Estado:</strong> Tabasco</p>         <p><strong>Metodología:</strong><br>Enfoque ambiental-violencia ​</p>         <p><strong>Tipo de Datos:</strong><br>Reportes Tabasco ​</p>         <p><a href="aestabasco.org ​" target="_blank">Ver fuente</a></p>     </div>     </div>`)[0];
+                popup_9f338000675705e1585056fc08dfe123.setContent(html_573f8d00623a7fd654284041b79a01b7);
+            
+        
+
+        marker_58f7b736471da0db07887ebca5aae752.bindPopup(popup_9f338000675705e1585056fc08dfe123)
+        ;
+
+        
+    
+    
+            marker_58f7b736471da0db07887ebca5aae752.bindTooltip(
+                `<div>
+                     Asociación Ecológica Santo Tomás
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_a70a1741371ac749d975c476f8f5dda4 = L.marker(
+                [17.9895, -92.9476],
+                {
+}
+            ).addTo(marker_cluster_ae8cd92f2f9d8a632267034a39722f76);
+        
+    
+        var popup_312c94d24c0a5a1fa565c511efc6012a = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_027f65c6fb7ab81b11cb68f90b70f530 = $(`<div id="html_027f65c6fb7ab81b11cb68f90b70f530" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial; width: 300px;">         <h4 style="color: #8B0000;">Comité de Derechos Humanos de Tabasco (CODEHUTAB)</h4>         <p><strong>Estado:</strong> Tabasco</p>         <p><strong>Metodología:</strong><br>Seguimiento judicial ​</p>         <p><strong>Tipo de Datos:</strong><br>Informes DDHH Tabasco ​</p>         <p><a href="codehutab.org ​" target="_blank">Ver fuente</a></p>     </div>     </div>`)[0];
+                popup_312c94d24c0a5a1fa565c511efc6012a.setContent(html_027f65c6fb7ab81b11cb68f90b70f530);
+            
+        
+
+        marker_a70a1741371ac749d975c476f8f5dda4.bindPopup(popup_312c94d24c0a5a1fa565c511efc6012a)
+        ;
+
+        
+    
+    
+            marker_a70a1741371ac749d975c476f8f5dda4.bindTooltip(
+                `<div>
+                     Comité de Derechos Humanos de Tabasco (CODEHUTAB)
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_6f529465b5922ffa428f3870c9f07d63 = L.marker(
+                [19.3182, -98.2374],
+                {
+}
+            ).addTo(marker_cluster_ae8cd92f2f9d8a632267034a39722f76);
+        
+    
+        var popup_61422e7d5a6357617acb2243c4b81ebe = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_8eaa5a1938aa41e651cfb5a4d4e5c2ec = $(`<div id="html_8eaa5a1938aa41e651cfb5a4d4e5c2ec" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial; width: 300px;">         <h4 style="color: #8B0000;">Centro Fray Julián Garcés de Derechos Humanos y Desarrollo Local</h4>         <p><strong>Estado:</strong> Tlaxcala</p>         <p><strong>Metodología:</strong><br>Análisis rural y urbano ​</p>         <p><strong>Tipo de Datos:</strong><br>Estudios Tlaxcala ​</p>         <p><a href="frayjuliangarces.org ​" target="_blank">Ver fuente</a></p>     </div>     </div>`)[0];
+                popup_61422e7d5a6357617acb2243c4b81ebe.setContent(html_8eaa5a1938aa41e651cfb5a4d4e5c2ec);
+            
+        
+
+        marker_6f529465b5922ffa428f3870c9f07d63.bindPopup(popup_61422e7d5a6357617acb2243c4b81ebe)
+        ;
+
+        
+    
+    
+            marker_6f529465b5922ffa428f3870c9f07d63.bindTooltip(
+                `<div>
+                     Centro Fray Julián Garcés de Derechos Humanos y Desarrollo Local
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_cd6c1a9aede2479946d0002e601b1db5 = L.marker(
+                [19.3182, -98.2374],
+                {
+}
+            ).addTo(marker_cluster_ae8cd92f2f9d8a632267034a39722f76);
+        
+    
+        var popup_21d3b4d0a7d78307e216f1413e433da4 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_eaf3b5f99735b1031f9469d37f793f34 = $(`<div id="html_eaf3b5f99735b1031f9469d37f793f34" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial; width: 300px;">         <h4 style="color: #8B0000;">Colectivo Mujer y Utopía, A.C.</h4>         <p><strong>Estado:</strong> Tlaxcala</p>         <p><strong>Metodología:</strong><br>Acompañamiento directo ​</p>         <p><strong>Tipo de Datos:</strong><br>Guías violencia Tlaxcala ​</p>         <p><a href="mujeryutopia.org ​" target="_blank">Ver fuente</a></p>     </div>     </div>`)[0];
+                popup_21d3b4d0a7d78307e216f1413e433da4.setContent(html_eaf3b5f99735b1031f9469d37f793f34);
+            
+        
+
+        marker_cd6c1a9aede2479946d0002e601b1db5.bindPopup(popup_21d3b4d0a7d78307e216f1413e433da4)
+        ;
+
+        
+    
+    
+            marker_cd6c1a9aede2479946d0002e601b1db5.bindTooltip(
+                `<div>
+                     Colectivo Mujer y Utopía, A.C.
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_36f406c418edd9ca0a353576f0226a81 = L.marker(
+                [19.1738, -96.1342],
+                {
+}
+            ).addTo(marker_cluster_ae8cd92f2f9d8a632267034a39722f76);
+        
+    
+        var popup_4638c5c558c8ee9e0c4ada99359506b8 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_184a662264a6f5cbfcd3667fa89d8df8 = $(`<div id="html_184a662264a6f5cbfcd3667fa89d8df8" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial; width: 300px;">         <h4 style="color: #8B0000;">Red Nacional de Periodistas</h4>         <p><strong>Estado:</strong> Veracruz</p>         <p><strong>Metodología:</strong><br>Monitoreo mediático ​</p>         <p><strong>Tipo de Datos:</strong><br>Cobertura feminicidios Veracruz ​</p>         <p><a href="rednacionalperiodistas.org ​" target="_blank">Ver fuente</a></p>     </div>     </div>`)[0];
+                popup_4638c5c558c8ee9e0c4ada99359506b8.setContent(html_184a662264a6f5cbfcd3667fa89d8df8);
+            
+        
+
+        marker_36f406c418edd9ca0a353576f0226a81.bindPopup(popup_4638c5c558c8ee9e0c4ada99359506b8)
+        ;
+
+        
+    
+    
+            marker_36f406c418edd9ca0a353576f0226a81.bindTooltip(
+                `<div>
+                     Red Nacional de Periodistas
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_180008dadeebfdecf73fcc121652adba = L.marker(
+                [20.9801, -89.6169],
+                {
+}
+            ).addTo(marker_cluster_ae8cd92f2f9d8a632267034a39722f76);
+        
+    
+        var popup_2b60d92a72990d910fecfcf29f6b7d18 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_2a4db106c00058042e2950a6f48ac47f = $(`<div id="html_2a4db106c00058042e2950a6f48ac47f" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial; width: 300px;">         <h4 style="color: #8B0000;">Ciencia Social Alternativa</h4>         <p><strong>Estado:</strong> Yucatán</p>         <p><strong>Metodología:</strong><br>Investigación académica ​</p>         <p><strong>Tipo de Datos:</strong><br>Estudios sureste ​</p>         <p><a href="cienciasocialalternativa.org ​" target="_blank">Ver fuente</a></p>     </div>     </div>`)[0];
+                popup_2b60d92a72990d910fecfcf29f6b7d18.setContent(html_2a4db106c00058042e2950a6f48ac47f);
+            
+        
+
+        marker_180008dadeebfdecf73fcc121652adba.bindPopup(popup_2b60d92a72990d910fecfcf29f6b7d18)
+        ;
+
+        
+    
+    
+            marker_180008dadeebfdecf73fcc121652adba.bindTooltip(
+                `<div>
+                     Ciencia Social Alternativa
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_f39af044a61091fe3a86cf84c02eebd1 = L.marker(
+                [20.9801, -89.6169],
+                {
+}
+            ).addTo(marker_cluster_ae8cd92f2f9d8a632267034a39722f76);
+        
+    
+        var popup_7cd065d36fc72b9c5a452808ccc7187b = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_4af534d0220bfc56ccc8d13ee599fc3c = $(`<div id="html_4af534d0220bfc56ccc8d13ee599fc3c" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial; width: 300px;">         <h4 style="color: #8B0000;">Red Por Nuestros Derechos Mujeres en Red</h4>         <p><strong>Estado:</strong> Yucatán</p>         <p><strong>Metodología:</strong><br>Redes comunitarias ​</p>         <p><strong>Tipo de Datos:</strong><br>Informes colectivos Yucatán ​</p>         <p><a href="mujeresenred.org ​" target="_blank">Ver fuente</a></p>     </div>     </div>`)[0];
+                popup_7cd065d36fc72b9c5a452808ccc7187b.setContent(html_4af534d0220bfc56ccc8d13ee599fc3c);
+            
+        
+
+        marker_f39af044a61091fe3a86cf84c02eebd1.bindPopup(popup_7cd065d36fc72b9c5a452808ccc7187b)
+        ;
+
+        
+    
+    
+            marker_f39af044a61091fe3a86cf84c02eebd1.bindTooltip(
+                `<div>
+                     Red Por Nuestros Derechos Mujeres en Red
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            var marker_258048ed05fe28c0f49230dea22fc84d = L.marker(
+                [20.9801, -89.6169],
+                {
+}
+            ).addTo(marker_cluster_ae8cd92f2f9d8a632267034a39722f76);
+        
+    
+        var popup_89b57f99fb87aafbea684176a4d98474 = L.popup({
+  "maxWidth": 300,
+});
+
+        
+            
+                var html_0097580982a4e32f0951c34450ebc644 = $(`<div id="html_0097580982a4e32f0951c34450ebc644" style="width: 100.0%; height: 100.0%;">     <div style="font-family: Arial; width: 300px;">         <h4 style="color: #8B0000;">Mujeres Trabajando en Pro de los Derechos Humanos A.C.</h4>         <p><strong>Estado:</strong> Yucatán</p>         <p><strong>Metodología:</strong><br>Acompañamiento local ​</p>         <p><strong>Tipo de Datos:</strong><br>Reportes DDHH Yucatán ​</p>         <p><a href="mujeresddhh.org ​" target="_blank">Ver fuente</a></p>     </div>     </div>`)[0];
+                popup_89b57f99fb87aafbea684176a4d98474.setContent(html_0097580982a4e32f0951c34450ebc644);
+            
+        
+
+        marker_258048ed05fe28c0f49230dea22fc84d.bindPopup(popup_89b57f99fb87aafbea684176a4d98474)
+        ;
+
+        
+    
+    
+            marker_258048ed05fe28c0f49230dea22fc84d.bindTooltip(
+                `<div>
+                     Mujeres Trabajando en Pro de los Derechos Humanos A.C.
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            marker_cluster_ae8cd92f2f9d8a632267034a39722f76.addTo(map_89db016eae5f8c027bf315b316152718);
+        
+</script>
+</html>
