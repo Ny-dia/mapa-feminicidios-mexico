@@ -1,4 +1,4 @@
-# 🗺️ Mapa de Organizaciones contra Feminicidios en México
+# 🗺️ Mapa de organizaciones que documentan feminicidios en México
 
 Mapa interactivo que visualiza las organizaciones que realizan documentación independiente de feminicidios en México.
 
