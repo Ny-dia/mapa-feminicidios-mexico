@@ -50,8 +50,7 @@ POPUP_TEMPLATE = """
 <div style="font-family: Arial; width: 300px;">
     <h4 style="color: #8B0000;">{organizacion}</h4>
     <p><strong>Estado:</strong> {estado}</p>
-    <p><strong>Tipo de Organización/Proyecto:</strong>
-        <span style="color: {color};">&#9679;</span> {categoria}</p>
+    <p><strong>Tipo de Organización/Proyecto:</strong><br>{categorias_html}</p>
     <p><strong>Metodología:</strong><br>{metodologia}</p>
     <p><strong>Tipo de Datos:</strong><br>{tipo_datos}</p>
     <p><a href="{enlace}" target="_blank">Ver fuente</a></p>
@@ -185,7 +184,8 @@ document.addEventListener('DOMContentLoaded', function () {
         var estados = getChecked('filter-estado');
         var categorias = getChecked('filter-categoria');
         FEM_MARKERS.forEach(function (entry) {
-            var show = estados.indexOf(entry.estado) !== -1 && categorias.indexOf(entry.categoria) !== -1;
+            var tieneCategoria = entry.categorias.some(function (c) { return categorias.indexOf(c) !== -1; });
+            var show = estados.indexOf(entry.estado) !== -1 && tieneCategoria;
             var present = clusterGroup.hasLayer(entry.marker);
             if (show && !present) { clusterGroup.addLayer(entry.marker); }
             if (!show && present) { clusterGroup.removeLayer(entry.marker); }
@@ -208,8 +208,19 @@ document.addEventListener('DOMContentLoaded', function () {
 """
 
 
-def marker_color(categoria):
-    return CATEGORY_COLORS.get(categoria, DEFAULT_COLOR)
+def parse_categorias(raw):
+    """Una organización puede pertenecer a varias categorías, separadas por coma
+    (no "/" porque varios nombres de categoría ya usan "/" internamente, ej.
+    "Observatorio / informe estadístico")."""
+    partes = [c.strip() for c in str(raw).split(",")]
+    return [c for c in partes if c]
+
+
+def marker_color(categorias):
+    for categoria in categorias:
+        if categoria in CATEGORY_COLORS:
+            return CATEGORY_COLORS[categoria]
+    return DEFAULT_COLOR
 
 
 def normalize_estado(raw):
@@ -225,12 +236,19 @@ def normalize_estado(raw):
     return NACIONAL_LABEL
 
 
-def build_popup_html(row, categoria):
+def build_categorias_html(categorias):
+    return "<br>".join(
+        f'<span style="color: {CATEGORY_COLORS.get(categoria, DEFAULT_COLOR)};">&#9679;</span> '
+        f'{html.escape(categoria)}'
+        for categoria in categorias
+    )
+
+
+def build_popup_html(row, categorias):
     return POPUP_TEMPLATE.format(
         organizacion=html.escape(str(row["Organización"])),
         estado=html.escape(str(row["Estado"])),
-        categoria=html.escape(categoria),
-        color=marker_color(categoria),
+        categorias_html=build_categorias_html(categorias),
         metodologia=html.escape(str(row["Metodología de Registro"])),
         tipo_datos=html.escape(str(row["Tipo de Datos y Productos"])),
         enlace=html.escape(str(row["Enlace / Fuente"]), quote=True),
@@ -287,25 +305,25 @@ def main():
     estados_presentes = set()
 
     for _, row in df.iterrows():
-        categoria = str(row["Tipo de Organización o Proyecto"])
+        categorias = parse_categorias(row["Tipo de Organización o Proyecto"])
         estado_filtro = normalize_estado(row["Estado"])
         estados_presentes.add(estado_filtro)
 
-        popup = folium.Popup(build_popup_html(row, categoria), max_width=300)
+        popup = folium.Popup(build_popup_html(row, categorias), max_width=300)
         tooltip = folium.Tooltip(html.escape(str(row["Organización"])), sticky=True)
 
         marker = folium.Marker(
             location=[row["Latitud"], row["Longitud"]],
             popup=popup,
             tooltip=tooltip,
-            icon=build_dot_icon(marker_color(categoria)),
+            icon=build_dot_icon(marker_color(categorias)),
         )
         marker.add_to(cluster)
 
         marker_meta.append({
             "marker_var": marker.get_name(),
             "estado": estado_filtro,
-            "categoria": categoria,
+            "categorias": categorias,
         })
 
     page_header_html = (
@@ -322,10 +340,10 @@ def main():
     )
 
     fem_markers_js = "[\n" + ",\n".join(
-        "  {marker: %s, estado: %s, categoria: %s}" % (
+        "  {marker: %s, estado: %s, categorias: %s}" % (
             entry["marker_var"],
             json.dumps(entry["estado"], ensure_ascii=False),
-            json.dumps(entry["categoria"], ensure_ascii=False),
+            json.dumps(entry["categorias"], ensure_ascii=False),
         )
         for entry in marker_meta
     ) + "\n]"

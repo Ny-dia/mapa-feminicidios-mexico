@@ -111,14 +111,18 @@ def check_enlaces(df: pd.DataFrame) -> list[dict]:
 
 
 def check_categorias(df: pd.DataFrame) -> list[dict]:
+    # Una organización puede tener varias categorías separadas por coma (ej. "Incidencia
+    # y defensa legal, Observatorio / informe estadístico") — cada una debe ser válida.
     hallazgos = []
     for _, row in df.iterrows():
-        categoria = str(row.get("Tipo de Organización o Proyecto", ""))
-        if categoria not in CATEGORIAS_VALIDAS:
+        categoria_raw = str(row.get("Tipo de Organización o Proyecto", ""))
+        partes = [c.strip() for c in categoria_raw.split(",") if c.strip()]
+        invalidas = [c for c in partes if c not in CATEGORIAS_VALIDAS]
+        if not partes or invalidas:
             hallazgos.append({
                 "organizacion": row["Organización"],
                 "tipo_problema": "categoria_invalida",
-                "detalle": f"'{categoria}' no es una de las 5 categorías válidas",
+                "detalle": f"'{categoria_raw}' — parte(s) no válida(s): {invalidas or '(vacío)'}",
             })
     return hallazgos
 
