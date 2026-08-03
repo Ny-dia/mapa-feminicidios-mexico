@@ -1,0 +1,7 @@
+.env
+__pycache__/
+*.pyc
+
+# Archivos de trabajo generados por los agentes (revisar antes de fusionar/commitear)
+organizaciones_nuevas.csv
+reporte_qa.csv

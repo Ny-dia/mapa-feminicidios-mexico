@@ -1,0 +1,6 @@
+pandas
+folium
+anthropic
+pydantic
+python-dotenv
+requests
