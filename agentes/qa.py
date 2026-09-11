@@ -70,32 +70,42 @@ def check_duplicados(df: pd.DataFrame) -> list[dict]:
     return hallazgos
 
 
-def _check_enlace(nombre: str, url: str) -> dict | None:
-    if not url or not str(url).strip():
-        return {"organizacion": nombre, "tipo_problema": "enlace_vacio", "detalle": "Sin enlace/fuente"}
+URL_PATTERN = re.compile(r"https?://\S+")
 
-    # Muchas filas guardan solo el dominio (ej. "ejemplo.org") sin esquema.
-    # Si el campo trae varios enlaces separados por espacio/coma, solo probamos el primero.
-    primer_url = url.split(",")[0].split(" ")[0].strip()
-    url_normalizada = primer_url if re.match(r"^[a-zA-Z][a-zA-Z0-9+.-]*://", primer_url) else f"https://{primer_url}"
 
+def _check_url(nombre: str, url: str) -> dict | None:
     try:
         resp = requests.get(
-            url_normalizada, timeout=TIMEOUT_ENLACE, headers={"User-Agent": NOMINATIM_USER_AGENT}, allow_redirects=True
+            url, timeout=TIMEOUT_ENLACE, headers={"User-Agent": NOMINATIM_USER_AGENT}, allow_redirects=True
         )
         if resp.status_code >= 400:
             return {
                 "organizacion": nombre,
                 "tipo_problema": "enlace_roto",
-                "detalle": f"HTTP {resp.status_code} en {url_normalizada} (campo original: {url})",
+                "detalle": f"HTTP {resp.status_code} en {url}",
             }
     except requests.RequestException as e:
-        return {
-            "organizacion": nombre,
-            "tipo_problema": "enlace_roto",
-            "detalle": f"{type(e).__name__} en {url_normalizada} (campo original: {url})",
-        }
+        return {"organizacion": nombre, "tipo_problema": "enlace_roto", "detalle": f"{type(e).__name__} en {url}"}
     return None
+
+
+def _check_contacto(nombre: str, contacto: str) -> list[dict]:
+    # La columna Contacto guarda domicilio/teléfono/email/redes separados por
+    # ' | '; revisamos cada URL que encontremos ahí (puede haber varias).
+    contacto = str(contacto or "").strip()
+    if not contacto or contacto.lower() == "nan":
+        return [{"organizacion": nombre, "tipo_problema": "contacto_vacio", "detalle": "Sin datos de contacto"}]
+
+    urls = [u.rstrip(".,;") for u in URL_PATTERN.findall(contacto)]
+    if not urls:
+        return []  # tiene contacto (tel/email/dirección) aunque no tenga link — no es un problema
+
+    hallazgos = []
+    for url in urls:
+        resultado = _check_url(nombre, url)
+        if resultado is not None:
+            hallazgos.append(resultado)
+    return hallazgos
 
 
 def check_enlaces(df: pd.DataFrame) -> list[dict]:
@@ -103,11 +113,11 @@ def check_enlaces(df: pd.DataFrame) -> list[dict]:
     # los valores faltantes quedan como float NaN real incluso tras astype(str).
     pares = list(zip(
         df["Organización"].fillna("").astype(str),
-        df["Enlace / Fuente"].fillna("").astype(str),
+        df["Contacto"].fillna("").astype(str),
     ))
     with ThreadPoolExecutor(max_workers=8) as executor:
-        resultados = executor.map(lambda p: _check_enlace(*p), pares)
-    return [r for r in resultados if r is not None]
+        resultados = executor.map(lambda p: _check_contacto(*p), pares)
+    return [hallazgo for lista in resultados for hallazgo in lista]
 
 
 def check_categorias(df: pd.DataFrame) -> list[dict]:

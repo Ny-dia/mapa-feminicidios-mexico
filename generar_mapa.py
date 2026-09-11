@@ -49,11 +49,10 @@ NACIONAL_LABEL = "Nacional / Regional"
 POPUP_TEMPLATE = """
 <div style="font-family: Arial; width: 300px;">
     <h4 style="color: #8B0000;">{organizacion}</h4>
-    <p><strong>Estado:</strong> {estado}</p>
+    <p><strong>Estado:</strong> {estado}</p>{contacto_html}
     <p><strong>Tipo de Organización/Proyecto:</strong><br>{categorias_html}</p>
     <p><strong>Metodología:</strong><br>{metodologia}</p>
     <p><strong>Tipo de Datos:</strong><br>{tipo_datos}</p>
-    <p><a href="{enlace}" target="_blank">Ver fuente</a></p>
 </div>
 """
 
@@ -244,14 +243,44 @@ def build_categorias_html(categorias):
     )
 
 
+URL_PATTERN = re.compile(r"https?://\S+")
+
+
+def linkify(texto_pieza):
+    """Convierte la URL dentro de una pieza de texto (ej. 'Web: https://...')
+    en un link clicable, dejando el resto del texto como texto plano escapado."""
+    match = URL_PATTERN.search(texto_pieza)
+    if not match:
+        return html.escape(texto_pieza)
+    url = match.group(0).rstrip(".,;")
+    antes = texto_pieza[:match.start()]
+    despues = texto_pieza[match.start() + len(url):]
+    return (
+        f"{html.escape(antes)}"
+        f'<a href="{html.escape(url, quote=True)}" target="_blank">{html.escape(url)}</a>'
+        f"{html.escape(despues)}"
+    )
+
+
+def build_contacto_html(contacto):
+    """La columna Contacto guarda varios datos (domicilio, teléfono, email,
+    redes) separados por ' | '; cada uno se muestra en su propia línea, con
+    cualquier URL convertida en link clicable."""
+    texto = str(contacto).strip()
+    if not texto or texto.lower() == "nan":
+        return ""
+    partes = "<br>".join(linkify(p.strip()) for p in texto.split("|") if p.strip())
+    return f"\n    <p><strong>Contacto:</strong><br>{partes}</p>"
+
+
 def build_popup_html(row, categorias):
     return POPUP_TEMPLATE.format(
         organizacion=html.escape(str(row["Organización"])),
         estado=html.escape(str(row["Estado"])),
+        contacto_html=build_contacto_html(row.get("Contacto", "")),
         categorias_html=build_categorias_html(categorias),
         metodologia=html.escape(str(row["Metodología de Registro"])),
         tipo_datos=html.escape(str(row["Tipo de Datos y Productos"])),
-        enlace=html.escape(str(row["Enlace / Fuente"]), quote=True),
     )
 
 

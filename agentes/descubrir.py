@@ -53,9 +53,9 @@ Para cada resultado que encuentres, reporta:
   "Observatorio / informe estadístico", "Base de datos / mapa interactivo",
   "Arte y memoria", "Periodismo / documentación independiente",
   "Incidencia y defensa legal"
-- el link de la fuente principal (su sitio, redes o repositorio), SOLO si encontraste
-  una URL real y verificable en los resultados de búsqueda. Si no encontraste un link
-  concreto, dilo explícitamente ("sin fuente verificable") — NUNCA escribas una
+- un dato de contacto verificable (su sitio web o red social principal), SOLO si
+  encontraste una URL real en los resultados de búsqueda. Si no encontraste nada
+  concreto, dilo explícitamente ("sin contacto verificable") — NUNCA escribas una
   instrucción de búsqueda (como "buscar 'X' en redes sociales") como si fuera un link.
 """
     resp = client.messages.create(
@@ -76,9 +76,9 @@ def estructurar_investigacion(texto: str) -> list[Organizacion]:
             "role": "user",
             "content": f"A partir de esta investigación, extrae una lista estructurada de "
                        f"organizaciones. Si un dato no está disponible usa cadena vacía. "
-                       f"Para enlace_fuente: solo pon una URL real (empieza con http:// o "
-                       f"https://); si el texto dice que no hay fuente verificable o solo "
-                       f"sugiere buscarla, deja el campo vacío en vez de escribir esa "
+                       f"Para contacto: solo pon una URL real (empieza con http:// o "
+                       f"https://); si el texto dice que no hay contacto verificable o solo "
+                       f"sugiere buscarlo, deja el campo vacío en vez de escribir esa "
                        f"instrucción.\n\n{texto}",
         }],
         output_format=ListaOrganizaciones,
@@ -144,8 +144,8 @@ def main():
             "Estado": o.estado,
             "Metodología de Registro": o.metodologia_de_registro,
             "Tipo de Datos y Productos": o.tipo_de_datos_y_productos,
-            "Enlace / Fuente": o.enlace_fuente,
             "Tipo de Organización o Proyecto": categoria or "",
+            "Contacto": o.contacto,
         })
 
     df_candidatos_previos = cargar_candidatos_previos()

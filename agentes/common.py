@@ -38,8 +38,8 @@ CSV_COLUMNS = [
     "Estado",
     "Metodología de Registro",
     "Tipo de Datos y Productos",
-    "Enlace / Fuente",
     "Tipo de Organización o Proyecto",
+    "Contacto",
 ]
 
 CATEGORIAS_VALIDAS = list(CATEGORY_COLORS.keys())
@@ -95,7 +95,7 @@ class Organizacion(BaseModel):
     metodologia_de_registro: str
     tipo_de_datos_y_productos: str
     categoria: str
-    enlace_fuente: str
+    contacto: str
 
 
 class ListaOrganizaciones(BaseModel):

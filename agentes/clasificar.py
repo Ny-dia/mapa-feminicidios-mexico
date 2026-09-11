@@ -9,6 +9,7 @@ Uso:
 """
 
 import argparse
+import re
 from typing import Optional
 
 import pandas as pd
@@ -23,6 +24,14 @@ from common import (
 )
 
 UMBRAL_VAGO = 15  # texto con menos de N caracteres se considera vacío/vago
+URL_PATTERN = re.compile(r"https?://\S+")
+
+
+def primera_url(contacto: str) -> str:
+    """La columna Contacto guarda varios datos separados por ' | '; toma la
+    primera URL real que encuentre (ignora teléfonos, emails, direcciones)."""
+    match = URL_PATTERN.search(str(contacto or ""))
+    return match.group(0).rstrip(".,;") if match else ""
 
 
 def clasificar_fuente(url: str) -> Optional[Clasificacion]:
@@ -83,7 +92,7 @@ def rellenar_csv(csv_path: str) -> None:
         metodologia = str(row.get("Metodología de Registro", "") or "")
         tipo_datos = str(row.get("Tipo de Datos y Productos", "") or "")
         categoria = str(row.get("Tipo de Organización o Proyecto", "") or "")
-        enlace = str(row.get("Enlace / Fuente", "") or "")
+        enlace = primera_url(row.get("Contacto", ""))
 
         necesita = (
             len(metodologia) < UMBRAL_VAGO

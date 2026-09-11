@@ -8,13 +8,13 @@ Mapa interactivo que visualiza organizaciones, colectivos y proyectos artístico
 
 ## 📊 Sobre el proyecto
 
-Este mapa fue desarrollado como parte del curso Datos contra feminicidios de ILDA (Iniciativa Latinoamericana de Datos Abiertos), y presentado en Dev Day 4 Women CDMX (julio 2026). Incluye actualmente 59 organizaciones y proyectos:
+Este mapa fue desarrollado como parte del curso Datos contra feminicidios de ILDA (Iniciativa Latinoamericana de Datos Abiertos), y presentado en Dev Day 4 Women CDMX (julio 2026). Incluye actualmente 64 organizaciones y proyectos:
 
 - 📍 Ubicación geográfica de cada organización
 - 📝 Metodología de registro
 - 📈 Tipo de datos y productos generados
-- 🏷️ Categorización por tipo de organización o proyecto (Base de datos/mapa interactivo, Observatorio/informe estadístico, Arte y memoria, Periodismo/documentación independiente, Incidencia y defensa legal)
-- 🔗 Enlaces a fuentes verificables
+- 🏷️ Categorización por tipo de organización o proyecto (Base de datos/mapa interactivo, Observatorio/informe estadístico, Arte y memoria, Periodismo/documentación independiente, Incidencia y defensa legal) — una organización puede tener varias categorías
+- 📞 Datos de contacto cuando están disponibles (sitio web, redes sociales, domicilio, teléfono o email)
 - 🔍 Filtros interactivos por estado y por tipo de organización
 
 ## 🤝 ¿Tu organización está en el mapa? ¿Falta alguna?
@@ -32,7 +32,7 @@ El CSV base (`organizaciones.csv`) es de acceso abierto y puede usarse para inve
 
 ## 📂 Estructura del repositorio
 
-- `organizaciones.csv` — fuente de datos del mapa (Organización, Latitud, Longitud, Estado, Metodología de Registro, Tipo de Datos y Productos, Enlace/Fuente, Tipo de Organización o Proyecto)
+- `organizaciones.csv` — fuente de datos del mapa (Organización, Latitud, Longitud, Estado, Metodología de Registro, Tipo de Datos y Productos, Tipo de Organización o Proyecto, Contacto)
 - `generar_mapa.py` — script que lee `organizaciones.csv` y genera `index.html`
 - `index.html` — mapa publicado vía GitHub Pages. **No editar a mano**: se regenera con el script a partir del CSV
 - `agentes/` — scripts de IA de apoyo para descubrir, clasificar y validar organizaciones nuevas antes de agregarlas al CSV (ver [agentes/README.md](agentes/README.md))
