@@ -215,11 +215,10 @@ def parse_categorias(raw):
     return [c for c in partes if c]
 
 
-def marker_color(categorias):
-    for categoria in categorias:
-        if categoria in CATEGORY_COLORS:
-            return CATEGORY_COLORS[categoria]
-    return DEFAULT_COLOR
+def marker_colors(categorias):
+    """Colores de las categorías reconocidas (máximo 2, en el orden del CSV)."""
+    colores = [CATEGORY_COLORS[c] for c in categorias if c in CATEGORY_COLORS]
+    return colores[:2] or [DEFAULT_COLOR]
 
 
 def normalize_estado(raw):
@@ -284,9 +283,14 @@ def build_popup_html(row, categorias):
     )
 
 
-def build_dot_icon(color):
+def build_dot_icon(colores):
+    # Un color: punto sólido. Dos colores: punto partido a la mitad (izq./der.).
+    if len(colores) > 1:
+        fondo = f"background:linear-gradient(90deg, {colores[0]} 50%, {colores[1]} 50%);"
+    else:
+        fondo = f"background-color:{colores[0]};"
     dot_html = (
-        f'<div style="background-color:{color}; width:14px; height:14px; '
+        f'<div style="{fondo} width:14px; height:14px; '
         f'border-radius:50%; border:2px solid white; '
         f'box-shadow:0 0 2px rgba(0,0,0,0.5);"></div>'
     )
@@ -345,7 +349,7 @@ def main():
             location=[row["Latitud"], row["Longitud"]],
             popup=popup,
             tooltip=tooltip,
-            icon=build_dot_icon(marker_color(categorias)),
+            icon=build_dot_icon(marker_colors(categorias)),
         )
         marker.add_to(cluster)
 
