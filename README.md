@@ -57,7 +57,7 @@ Esto sobrescribe `index.html` con los datos actualizados del CSV.
 
 ## 📅 Última actualización
 
-Agosto 2026
+Octubre 2026
 
 ## 👥 Créditos
 
