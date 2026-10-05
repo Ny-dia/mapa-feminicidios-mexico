@@ -8,12 +8,12 @@ Mapa interactivo que visualiza organizaciones, colectivos y proyectos artístico
 
 ## 📊 Sobre el proyecto
 
-Este mapa fue desarrollado como parte del curso Datos contra feminicidios de ILDA (Iniciativa Latinoamericana de Datos Abiertos), y presentado en Dev Day 4 Women CDMX (julio 2026). Incluye actualmente 64 organizaciones y proyectos:
+Este mapa fue desarrollado como parte del curso Datos contra feminicidios de ILDA (Iniciativa Latinoamericana de Datos Abiertos), y presentado en Dev Day 4 Women CDMX (julio 2026). Incluye actualmente 62 organizaciones y proyectos:
 
 - 📍 Ubicación geográfica de cada organización
 - 📝 Metodología de registro
 - 📈 Tipo de datos y productos generados
-- 🏷️ Categorización por tipo de organización o proyecto (Base de datos/mapa interactivo, Observatorio/informe estadístico, Arte y memoria, Periodismo/documentación independiente, Incidencia y defensa legal) — una organización puede tener varias categorías
+- 🏷️ Categorización por tipo de organización o proyecto (Base de datos/mapa interactivo, Observatorio/informe estadístico, Arte y memoria, Periodismo/documentación independiente, Incidencia y defensa legal) — una organización puede tener varias categorías (se muestra como un punto partido en dos colores)
 - 📞 Datos de contacto cuando están disponibles (sitio web, redes sociales, domicilio, teléfono o email)
 - 🔍 Filtros interactivos por estado y por tipo de organización
 
