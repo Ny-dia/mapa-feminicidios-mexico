@@ -330,7 +330,14 @@ def build_categoria_checkboxes():
 def main():
     df = pd.read_csv(CSV_PATH)
 
-    mapa = folium.Map(location=MEXICO_CENTER, zoom_start=ZOOM_START, tiles="CartoDB positron")
+    # Fondo gris claro de Esri (no requiere API key; CARTO ahora la pide)
+    mapa = folium.Map(
+        location=MEXICO_CENTER,
+        zoom_start=ZOOM_START,
+        tiles="https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}",
+        attr="Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ",
+        max_zoom=16,
+    )
     cluster = MarkerCluster().add_to(mapa)
     cluster_var = cluster.get_name()
 
