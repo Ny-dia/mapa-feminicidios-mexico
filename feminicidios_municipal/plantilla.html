@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Feminicidios por municipio · Cifras oficiales SESNSP 2026 · Memoria Viva de Feminicidios</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:wght@500;600&display=swap" rel="stylesheet">
+<style>/*LEAFLET_CSS*/</style>
+<style>
+:root{
+  --page:#f9f9f7; --surface:#fcfcfb; --ink:#0b0b0b; --ink2:#52514e; --muted:#6f6d68;
+  --hair:#e1e0d9; --base:#c3c2b7; --zero:#efeee9; --zero-line:#dcdad2;
+  --c1:#ddd3f5; --c2:#b9a5ec; --c3:#9179dc; --c4:#6a4fc4; --c5:#45309a; --c6:#28175f;
+  --accent:#45309a; --state-line:#52514e;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--page);color:var(--ink);font-family:"IBM Plex Sans",system-ui,sans-serif;font-size:15px;line-height:1.45}
+header{padding:28px 32px 12px;max-width:1400px;margin:0 auto}
+.kicker{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--ink2);font-weight:500}
+h1{font-family:"IBM Plex Serif",Georgia,serif;font-weight:600;font-size:clamp(24px,3.2vw,36px);line-height:1.15;margin:6px 0 8px}
+.dek{color:var(--ink2);max-width:780px;margin:0}
+main{max-width:1400px;margin:0 auto;padding:8px 32px 32px;display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:20px}
+.controls{grid-column:1/-1;display:flex;flex-wrap:wrap;gap:16px;align-items:center;padding:4px 0 2px}
+.seg{display:inline-flex;border:1px solid var(--base);border-radius:8px;overflow:hidden;background:var(--surface)}
+.seg button{font:inherit;font-size:14px;border:0;background:transparent;padding:7px 14px;cursor:pointer;color:var(--ink2)}
+.seg button+button{border-left:1px solid var(--base)}
+.seg button[aria-pressed="true"]{background:var(--accent);color:#fff}
+.seg button:focus-visible,select:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+label.sel{display:inline-flex;gap:8px;align-items:center;font-size:14px;color:var(--ink2)}
+select{font:inherit;font-size:14px;padding:6px 10px;border:1px solid var(--base);border-radius:8px;background:var(--surface);color:var(--ink)}
+.mapwrap{position:relative;background:var(--surface);border:1px solid var(--hair);border-radius:12px;overflow:hidden;min-height:560px}
+#map{position:absolute;inset:0;background:var(--surface)}
+.legend{position:absolute;left:14px;bottom:14px;z-index:500;background:rgba(252,252,251,.94);border:1px solid var(--hair);border-radius:10px;padding:10px 12px;font-size:12px;color:var(--ink2)}
+.legend .t{font-weight:600;color:var(--ink);margin-bottom:6px;font-size:12px}
+.legend .row{display:flex;gap:2px}
+.legend .sw{width:34px;height:12px;border-radius:2px}
+.legend .lb{display:flex;gap:2px}
+.legend .lb span{width:34px;text-align:center;font-variant-numeric:tabular-nums;white-space:nowrap;font-size:11px}
+.reset{position:absolute;right:14px;top:14px;z-index:500;font:inherit;font-size:13px;background:var(--surface);border:1px solid var(--base);border-radius:8px;padding:6px 10px;cursor:pointer;color:var(--ink2)}
+aside{display:flex;flex-direction:column;gap:16px}
+.card{background:var(--surface);border:1px solid var(--hair);border-radius:12px;padding:16px 18px}
+.card h2{font-size:13px;font-weight:600;margin:0 0 8px;color:var(--ink2);text-transform:uppercase;letter-spacing:.06em}
+.hero{font-family:"IBM Plex Serif",Georgia,serif;font-size:44px;font-weight:600;line-height:1;font-variant-numeric:tabular-nums}
+.hero-sub{color:var(--ink2);font-size:14px;margin-top:6px}
+.top ol{list-style:none;margin:0;padding:0}
+.top li{display:grid;grid-template-columns:1fr auto;gap:8px;padding:6px 0;border-top:1px solid var(--hair);cursor:pointer;align-items:center}
+.top li:first-child{border-top:0}
+.top li:hover .nm,.top li:focus .nm{text-decoration:underline}
+.top li:focus{outline:2px solid var(--accent);outline-offset:2px}
+.top .nm{font-size:14px}
+.top .st{font-size:12px;color:var(--muted)}
+.top .v{font-variant-numeric:tabular-nums;font-weight:600}
+.detail .name{font-family:"IBM Plex Serif",Georgia,serif;font-size:22px;font-weight:600;line-height:1.2}
+.detail .state{color:var(--ink2);font-size:14px;margin-bottom:10px}
+.kv{display:grid;grid-template-columns:1fr auto;gap:2px 12px;font-size:14px;margin:8px 0}
+.kv .v{font-variant-numeric:tabular-nums;font-weight:600;text-align:right}
+.sub{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin:12px 0 4px;font-weight:600}
+.empty{color:var(--muted);font-size:14px}
+.key{display:flex;gap:14px;font-size:12px;color:var(--ink2);margin-top:4px}
+.key i{display:inline-block;width:10px;height:10px;border-radius:2px;margin-right:5px;vertical-align:-1px}
+.pct{font-size:12px;color:var(--muted);font-weight:400}
+.callout{background:#f1edfb;border-radius:8px;padding:10px 12px;margin:10px 0 4px;font-size:14px}
+.callout b{font-size:20px;font-family:"IBM Plex Serif",Georgia,serif}
+.notes{grid-column:1/-1;font-size:13px;color:var(--ink2);max-width:900px}
+.notes h2{font-size:13px;text-transform:uppercase;letter-spacing:.06em;color:var(--ink);margin:12px 0 6px}
+.notes p,.notes li{margin:4px 0}
+.notes a{color:var(--accent)}
+.tablebtn{font:inherit;font-size:13px;background:none;border:0;color:var(--accent);cursor:pointer;padding:0;text-decoration:underline}
+table{border-collapse:collapse;width:100%;font-size:13px;margin-top:8px}
+th,td{text-align:left;padding:5px 8px;border-bottom:1px solid var(--hair)}
+th{color:var(--ink2);font-weight:600;position:sticky;top:0;background:var(--surface)}
+td.n,th.n{text-align:right;font-variant-numeric:tabular-nums}
+.tablewrap{max-height:420px;overflow:auto;border:1px solid var(--hair);border-radius:10px;background:var(--surface)}
+.leaflet-container{font-family:inherit;background:var(--surface)}
+.leaflet-tooltip.tt{background:#fff;border:1px solid var(--hair);border-radius:8px;box-shadow:0 2px 10px rgba(0,0,0,.12);padding:8px 10px;color:var(--ink);font-size:13px}
+.tt b{font-weight:600}
+.tt .s{color:var(--ink2)}
+@media (max-width:900px){
+  header{padding:20px 16px 8px} main{grid-template-columns:1fr;padding:8px 16px 24px}
+  .mapwrap{min-height:440px}
+  .legend .sw,.legend .lb span{width:28px}
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="kicker">Memoria Viva de Feminicidios · Cifras oficiales</div>
+  <h1>Víctimas de feminicidio por municipio, enero–septiembre de 2026</h1>
+  <p class="dek">Lo que registran las fiscalías estatales ante el Secretariado Ejecutivo del Sistema Nacional de Seguridad Pública (SESNSP). Cada número es una mujer; y cada cifra oficial es solo lo que el Estado decidió clasificar como feminicidio. La capa “Muertes violentas de mujeres” muestra cuántos asesinatos de mujeres quedaron fuera de esa clasificación.</p>
+</header>
+<main>
+  <div class="controls" role="group" aria-label="Filtros del mapa">
+    <div class="seg" id="metric" role="group" aria-label="Indicador">
+      <button type="button" data-m="f" aria-pressed="true">Feminicidio</button>
+      <button type="button" data-m="t" aria-pressed="false">Tentativa de feminicidio</button>
+      <button type="button" data-m="a" aria-pressed="false">Feminicidio + tentativa</button>
+      <button type="button" data-m="v" aria-pressed="false">Muertes violentas de mujeres</button>
+    </div>
+    <label class="sel">Periodo
+      <select id="period" aria-label="Periodo"></select>
+    </label>
+  </div>
+
+  <div class="mapwrap">
+    <div id="map" role="img" aria-label="Mapa de México por municipio coloreado según el número de víctimas"></div>
+    <button class="reset" id="reset" type="button">Ver todo el país</button>
+    <div class="legend" id="legend"></div>
+  </div>
+
+  <aside>
+    <div class="card">
+      <h2 id="heroLabel">Total nacional</h2>
+      <div class="hero" id="hero">–</div>
+      <div class="hero-sub" id="heroSub"></div>
+    </div>
+    <div class="card detail" id="detail" aria-live="polite">
+      <h2>Municipio</h2>
+      <p class="empty">Pasa el cursor o toca un municipio en el mapa para ver su detalle.</p>
+    </div>
+    <div class="card top">
+      <h2 id="topLabel">Municipios con más víctimas</h2>
+      <ol id="top"></ol>
+    </div>
+  </aside>
+
+  <section class="notes">
+    <h2>Todos los municipios</h2>
+    <button class="tablebtn" id="toggleTable" type="button" aria-expanded="false">Mostrar la tabla con los datos del mapa</button>
+    <div id="tableBox" hidden><div class="tablewrap"><table id="tbl"></table></div></div>
+
+    <h2>Fuente y notas</h2>
+    <ul>
+      <li><b>Fuente:</b> SESNSP, Centro Nacional de Información. Registro Nacional de Incidencia Delictiva (RNID), <i>Fuero común – Víctimas, incidencia delictiva municipal</i>, enero–septiembre 2026 (actualizado el 6 de octubre de 2026). <a href="https://www.gob.mx/sesnsp/acciones-y-programas/datos-abiertos-de-incidencia-delictiva">Datos abiertos de incidencia delictiva</a>.</li>
+      <li><b>Qué se cuenta:</b> víctimas registradas en carpetas de investigación iniciadas por las fiscalías estatales, clasificadas como feminicidio o tentativa de feminicidio. No son sentencias ni casos confirmados.</li>
+      <li><b>Muertes violentas de mujeres:</b> suma de víctimas de feminicidio y mujeres víctimas de homicidio doloso. El porcentaje “registrado como feminicidio” indica qué parte de esos asesinatos la fiscalía clasificó como feminicidio; solo se calcula con <span id="minpct"></span> casos o más, porque con muy pocos casos el porcentaje no es confiable. Además, <span id="noid"></span> víctimas de homicidio doloso en el país no tienen sexo identificado y no se incluyen, así que el total puede quedarse corto.</li>
+      <li><b>Municipio:</b> es el municipio donde la fiscalía registró el delito. <span id="noEsp"></span></li>
+      <li><b>Subregistro:</b> muchas muertes violentas de mujeres se registran como homicidio doloso y no aparecen aquí. Hay grandes diferencias entre fiscalías: algunas registran muchas más tentativas que feminicidios consumados. Comparar estados con estas cifras exige cautela.</li>
+      <li><b>Cifras absolutas:</b> el mapa muestra conteos, no tasas por población. Los municipios más poblados tienden a registrar más casos.</li>
+      <li><b>Metodología 2026:</b> desde 2026 el SESNSP usa una nueva metodología (RNID), por lo que estas cifras no son directamente comparables con las series 2015–2025.</li>
+      <li><b>Límites municipales:</b> Marco geoestadístico 2023 (2,475 municipios), simplificado para la web.</li>
+    </ul>
+  </section>
+</main>
+
+<script>/*LEAFLET_JS*/</script>
+<script>/*TOPOJSON_JS*/</script>
+<script>
+const TOPO = /*TOPO_DATA*/;
+const DATA = /*FEM_DATA*/;
+
+const MESES = DATA.meta.meses;
+const MESES_CORTO = ["ene","feb","mar","abr","may","jun","jul","ago","sep"];
+const MUN = DATA.municipios;
+const BINSETS = {
+  def:{b:[1,2,3,5,10,20], l:["1","2","3–4","5–9","10–19","20+"]},
+  v:  {b:[1,2,5,10,20,40], l:["1","2–4","5–9","10–19","20–39","40+"]}
+};
+const binset = () => state.m==="v" ? BINSETS.v : BINSETS.def;
+const MIN_PCT = 5;                        // casos mínimos para mostrar el % registrado como feminicidio
+const sum = a => a.reduce((x,y)=>x+y,0);
+const COLORS = ["--c1","--c2","--c3","--c4","--c5","--c6"].map(v=>getComputedStyle(document.documentElement).getPropertyValue(v).trim());
+const ZERO = getComputedStyle(document.documentElement).getPropertyValue("--zero").trim();
+const ZERO_LINE = getComputedStyle(document.documentElement).getPropertyValue("--zero-line").trim();
+const MODS = ["Con arma de fuego","Con arma blanca","Con otro elemento","No especificada"];
+const EDADES = ["0 a 12 años","13 a 17 años","18 a 29 años","30 a 60 años","Más de 60 años","No especificada"];
+const fmt = n => n.toLocaleString("es-MX");
+
+let state = {m:"f", p:"all", selected:null};
+
+// periodo
+const sel = document.getElementById("period");
+sel.innerHTML = `<option value="all">Enero–septiembre (acumulado)</option>` + MESES.map((m,i)=>`<option value="${i}">${m}</option>`).join("");
+
+function val(cve){
+  const d = MUN[cve]; if(!d) return 0;
+  const pick = arr => state.p==="all" ? arr.reduce((a,b)=>a+b,0) : arr[+state.p];
+  if(state.m==="f") return pick(d.f);
+  if(state.m==="t") return pick(d.t);
+  if(state.m==="v") return pick(d.f)+pick(d.h);
+  return pick(d.f)+pick(d.t);
+}
+function color(v){
+  if(v<=0) return ZERO;
+  const B=binset().b; let i=0; for(let k=0;k<B.length;k++) if(v>=B[k]) i=k;
+  return COLORS[i];
+}
+function metricLabel(){ return {f:"víctimas de feminicidio",t:"víctimas de tentativa de feminicidio",a:"víctimas de feminicidio y tentativa",v:"mujeres víctimas de feminicidio u homicidio doloso"}[state.m]; }
+function periodSum(arr){ return state.p==="all" ? sum(arr) : arr[+state.p]; }
+function pctFem(f,h){ const n=f+h; return n>=MIN_PCT ? Math.round(100*f/n) : null; }
+function periodLabel(){ return state.p==="all" ? "enero–septiembre 2026" : MESES[+state.p].toLowerCase()+" 2026"; }
+
+// mapa
+const map = L.map("map",{preferCanvas:true, zoomSnap:0.25, attributionControl:false, minZoom:4, maxZoom:11});
+const renderer = L.canvas({padding:0.5, tolerance:3});
+const munGeo = topojson.feature(TOPO, TOPO.objects.municipios);
+const edoGeo = topojson.mesh(TOPO, TOPO.objects.estados, (a,b)=>a!==b);
+const edoOuter = topojson.mesh(TOPO, TOPO.objects.estados, (a,b)=>a===b);
+
+const layers = {};
+const munLayer = L.geoJSON(munGeo,{
+  renderer,
+  style: f => styleFor(f.properties.CVEGEO),
+  onEachFeature:(f,l)=>{
+    layers[f.properties.CVEGEO]=l;
+    l.on("mouseover",()=>{hover(f.properties.CVEGEO,l)});
+    l.on("mouseout",()=>{unhover(f.properties.CVEGEO,l)});
+    l.on("click",()=>{select(f.properties.CVEGEO,false)});
+    l.bindTooltip(()=>tooltipHtml(f.properties),{sticky:true,className:"tt",direction:"top",offset:[0,-8]});
+  }
+}).addTo(map);
+L.geoJSON(edoGeo,{renderer,interactive:false,style:{color:"#52514e",weight:1.1,opacity:.75,fill:false}}).addTo(map);
+L.geoJSON(edoOuter,{renderer,interactive:false,style:{color:"#52514e",weight:1.1,opacity:.75,fill:false}}).addTo(map);
+const bounds = munLayer.getBounds();
+map.fitBounds(bounds,{padding:[10,10]});
+document.getElementById("reset").onclick=()=>{map.fitBounds(bounds,{padding:[10,10]}); select(null)};
+
+function styleFor(cve){
+  const v = val(cve);
+  const isSel = state.selected===cve;
+  return {fillColor:color(v), fillOpacity:1, color: isSel ? "#0b0b0b" : (v>0? "#fcfcfb" : ZERO_LINE), weight: isSel?2.2:(v>0?0.6:0.4)};
+}
+function hover(cve,l){ l.setStyle({color:"#0b0b0b",weight:1.8}); l.bringToFront(); if(!state.selected) renderDetail(cve); }
+function unhover(cve,l){ l.setStyle(styleFor(cve)); if(state.selected && layers[state.selected]) layers[state.selected].bringToFront(); if(!state.selected) renderDetail(null); }
+function tooltipHtml(p){
+  const v = val(p.CVEGEO);
+  let extra="";
+  const d=MUN[p.CVEGEO];
+  if(state.m==="v" && d && v>0){ const f=periodSum(d.f), h=periodSum(d.h), pc=pctFem(f,h);
+    extra = `<br><span class="s">${fmt(f)} feminicidio · ${fmt(h)} homicidio doloso${pc!==null?` · ${pc}% como feminicidio`:""}</span>`; }
+  return `<b>${p.NOMGEO}</b> <span class="s">· ${p.NOM_ENT}</span><br>${v===0?"Sin registros":`<b>${fmt(v)}</b> ${metricLabel()}`}${extra}<br><span class="s">${periodLabel()}</span>`;
+}
+
+function select(cve, zoom=true){
+  const prev = state.selected; state.selected = cve;
+  if(prev && layers[prev]) layers[prev].setStyle(styleFor(prev));
+  if(cve && layers[cve]){ layers[cve].setStyle(styleFor(cve)); layers[cve].bringToFront(); if(zoom) map.fitBounds(layers[cve].getBounds(),{maxZoom:8,padding:[60,60]}); }
+  renderDetail(cve);
+}
+
+function bars(arr, low){
+  // arr = total por mes; low (opcional) = parte inferior (feminicidio) de la barra apilada
+  const max = Math.max(1,...arr), w=26, gap=4, h=70, top=12;
+  const W = arr.length*(w+gap)-gap;
+  let s = `<svg viewBox="0 -${top} ${W} ${h+16+top}" width="100%" role="img" aria-label="Víctimas por mes">`;
+  arr.forEach((v,i)=>{
+    const bh = v? Math.max(3, v/max*h) : 0, x=i*(w+gap), y=h-bh;
+    const hl = state.p!=="all" && +state.p===i;
+    s += `<g><title>${MESES[i]}: ${v}</title>`;
+    if(v && low){
+      const lv=low[i], lh = lv? lv/max*h : 0;
+      const top_h = bh - lh;                       // parte homicidio doloso
+      if(top_h>0) s += `<path d="M${x},${h-lh-(lh?2:0)} V${y+3} Q${x},${y} ${x+3},${y} H${x+w-3} Q${x+w},${y} ${x+w},${y+3} V${h-lh-(lh?2:0)} Z" fill="${hl?"#9179dc":"#b9a5ec"}"/>`;
+      if(lh>0) s += lh>=bh-0.01 ? `<path d="M${x},${h} V${y+3} Q${x},${y} ${x+3},${y} H${x+w-3} Q${x+w},${y} ${x+w},${y+3} V${h} Z" fill="${hl?"#28175f":"#45309a"}"/>` : `<rect x="${x}" y="${h-lh}" width="${w}" height="${lh}" fill="${hl?"#28175f":"#45309a"}"/>`;
+    } else if(v) s += `<path d="M${x},${h} V${y+3} Q${x},${y} ${x+3},${y} H${x+w-3} Q${x+w},${y} ${x+w},${y+3} V${h} Z" fill="${hl?"#28175f":"#6a4fc4"}"/>`;
+    s += `<text x="${x+w/2}" y="${h+12}" font-size="9" text-anchor="middle" fill="#6f6d68">${MESES_CORTO[i]}</text>`;
+    if(v) s += `<text x="${x+w/2}" y="${y-3}" font-size="9" text-anchor="middle" fill="#52514e">${v}</text>`;
+    s += `</g>`;
+  });
+  s += `<line x1="0" x2="${W}" y1="${h}" y2="${h}" stroke="#c3c2b7" stroke-width="1"/></svg>`;
+  return s;
+}
+
+function renderDetail(cve){
+  const el = document.getElementById("detail");
+  if(!cve){ el.innerHTML = `<h2>Municipio</h2><p class="empty">Pasa el cursor o toca un municipio en el mapa para ver su detalle.</p>`; return; }
+  const p = layers[cve].feature.properties, d = MUN[cve];
+  if(!d){ el.innerHTML = `<h2>Municipio</h2><div class="name">${p.NOMGEO}</div><div class="state">${p.NOM_ENT}</div><p class="empty">Sin víctimas de feminicidio, tentativa ni mujeres víctimas de homicidio doloso registradas por la fiscalía en enero–septiembre de 2026.</p>`; return; }
+  const sf = sum(d.f), st = sum(d.t), sh = sum(d.h);
+  const series = state.m==="t" ? d.t : state.m==="f" ? d.f : state.m==="v" ? d.f.map((v,i)=>v+d.h[i]) : d.f.map((v,i)=>v+d.t[i]);
+  const pc = pctFem(sf,sh);
+  const callout = (sf+sh)>0 ? `<div class="callout">${pc!==null ? `De las ${fmt(sf+sh)} mujeres asesinadas, <b>${pc}%</b> se registró como feminicidio` : `${fmt(sf+sh)} ${sf+sh===1?"mujer asesinada":"mujeres asesinadas"}: muy pocos casos para calcular el porcentaje registrado como feminicidio`}</div>` : "";
+  let html = `<h2>Municipio</h2><div class="name">${p.NOMGEO}</div><div class="state">${p.NOM_ENT}</div>
+    <div class="kv"><span>Feminicidio</span><span class="v">${fmt(sf)}</span><span>Homicidio doloso de mujeres</span><span class="v">${fmt(sh)}</span><span>Tentativa de feminicidio</span><span class="v">${fmt(st)}</span></div>
+    <div class="pct">Enero–septiembre 2026</div>${callout}
+    <div class="sub">Por mes · ${metricLabel()}</div>${state.m==="v" ? bars(series,d.f)+`<div class="key"><span><i style="background:#45309a"></i>Feminicidio</span><span><i style="background:#b9a5ec"></i>Homicidio doloso</span></div>` : bars(series)}`;
+  const rows = (labels,arr)=>labels.map((l,i)=>arr[i]?`<span>${l}</span><span class="v">${arr[i]}</span>`:"").join("");
+  if(state.m==="v" && sf+sh>0){
+    html += `<div class="sub">Muertes violentas de mujeres por modalidad</div><div class="kv">${rows(MODS,d.mo.map((v,i)=>v+d.hm[i]))}</div>`;
+  }
+  if(sf>0){
+    if(state.m!=="v") html += `<div class="sub">Feminicidio por modalidad</div><div class="kv">${rows(MODS,d.mo)}</div>`;
+    html += `<div class="sub">Feminicidio por edad de la víctima</div><div class="kv">${rows(EDADES,d.ed)}</div>`;
+  }
+  el.innerHTML = html;
+}
+
+function renderLegend(){
+  const labels = binset().l;
+  document.getElementById("legend").innerHTML =
+    `<div class="t">Víctimas · ${periodLabel()}</div>
+     <div class="row"><div class="sw" style="background:${ZERO};border:1px solid ${ZERO_LINE}"></div>${COLORS.map(c=>`<div class="sw" style="background:${c}"></div>`).join("")}</div>
+     <div class="lb"><span>0</span>${labels.map(l=>`<span>${l}</span>`).join("")}</div>`;
+}
+
+function renderSide(){
+  const all = Object.keys(MUN).map(c=>[c,val(c)]);
+  const total = all.reduce((a,[,v])=>a+v,0);
+  const withCases = all.filter(([c,v])=>v>0 && layers[c]).length;
+  document.getElementById("hero").textContent = fmt(total);
+  document.getElementById("heroLabel").textContent = "Total nacional";
+  let sub = `${metricLabel()} · ${periodLabel()} · en ${fmt(withCases)} municipios`;
+  if(state.m==="v"){ const F=sum(Object.values(MUN).map(d=>periodSum(d.f))), H=sum(Object.values(MUN).map(d=>periodSum(d.h)));
+    sub += `. Solo ${Math.round(100*F/(F+H))}% fue registrado como feminicidio (${fmt(F)}); ${fmt(H)} como homicidio doloso.`; }
+  document.getElementById("heroSub").textContent = sub;
+  document.getElementById("topLabel").textContent = "Municipios con más víctimas";
+  const top = all.filter(([c,v])=>v>0 && layers[c]).sort((a,b)=>b[1]-a[1]||MUN[a[0]].n.localeCompare(MUN[b[0]].n)).slice(0,10);
+  document.getElementById("top").innerHTML = top.length ? top.map(([c,v])=>`<li tabindex="0" data-c="${c}"><div><div class="nm">${MUN[c].n}</div><div class="st">${MUN[c].e}</div></div><span class="v">${fmt(v)}${state.m==="v" ? (()=>{const pc=pctFem(periodSum(MUN[c].f),periodSum(MUN[c].h));return pc!==null?`<div class="pct">${pc}% feminicidio</div>`:""})() : ""}</span></li>`).join("") : `<li class="empty">Sin registros en este periodo.</li>`;
+  document.querySelectorAll("#top li[data-c]").forEach(li=>{
+    li.onclick=()=>select(li.dataset.c);
+    li.onkeydown=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();select(li.dataset.c)}};
+  });
+  // no especificado
+  const ne = Object.keys(MUN).filter(c=>!layers[c]).map(c=>[MUN[c],val(c)]).filter(([,v])=>v>0);
+  document.getElementById("noEsp").textContent = ne.length ? `En este periodo, ${ne.map(([d,v])=>`${fmt(v)} en ${d.e}`).join(", ")} sin municipio especificado; se cuentan en el total nacional pero no aparecen en el mapa.` : "";
+}
+
+function renderTable(){
+  const rows = Object.keys(MUN).filter(c=>layers[c]).map(c=>{
+    const d=MUN[c]; const sf=sum(d.f), st=sum(d.t), sh=sum(d.h), pc=pctFem(sf,sh);
+    return [d.e,d.n,c,sf,st,sh,sf+sh,pc===null?"–":pc+"%"];
+  }).sort((a,b)=>b[6]-a[6]||b[3]-a[3]);
+  document.getElementById("tbl").innerHTML = `<thead><tr><th>Entidad</th><th>Municipio</th><th>Clave INEGI</th><th class="n">Feminicidio</th><th class="n">Tentativa</th><th class="n">Homicidio doloso (mujeres)</th><th class="n">Muertes violentas</th><th class="n">% feminicidio</th></tr></thead><tbody>${rows.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td><td>${r[2]}</td>${r.slice(3).map(x=>`<td class="n">${x}</td>`).join("")}</tr>`).join("")}</tbody>`;
+}
+document.getElementById("toggleTable").onclick=e=>{
+  const box=document.getElementById("tableBox"); const open=box.hidden; box.hidden=!open;
+  e.target.setAttribute("aria-expanded",open); e.target.textContent = open? "Ocultar la tabla":"Mostrar la tabla con los datos del mapa";
+};
+
+function update(){
+  munLayer.eachLayer(l=>l.setStyle(styleFor(l.feature.properties.CVEGEO)));
+  if(state.selected && layers[state.selected]) layers[state.selected].bringToFront();
+  renderLegend(); renderSide(); renderDetail(state.selected);
+}
+document.querySelectorAll("#metric button").forEach(b=>b.onclick=()=>{
+  state.m=b.dataset.m; document.querySelectorAll("#metric button").forEach(x=>x.setAttribute("aria-pressed", x===b)); update();
+});
+sel.onchange=()=>{state.p=sel.value; update();};
+document.getElementById("minpct").textContent=MIN_PCT; document.getElementById("noid").textContent=fmt(DATA.meta.homicidio_doloso_sexo_no_identificado);
+renderTable(); update();
+window.addEventListener("resize",()=>map.invalidateSize());
+</script>
+</body>
+</html>

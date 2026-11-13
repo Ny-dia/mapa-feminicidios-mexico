@@ -6,6 +6,10 @@ Mapa interactivo que visualiza organizaciones, colectivos y proyectos artístico
 
 ### 👉 [Click aquí para ver el mapa interactivo](https://ny-dia.github.io/mapa-feminicidios-mexico/)
 
+### 👉 [Mapa municipal de feminicidios con cifras oficiales (SESNSP 2026)](https://ny-dia.github.io/mapa-feminicidios-mexico/feminicidios_municipal/)
+
+Víctimas de feminicidio, tentativa de feminicidio y muertes violentas de mujeres (feminicidio + homicidio doloso de mujeres) por municipio, enero–septiembre de 2026, con el porcentaje de asesinatos de mujeres que cada fiscalía registró como feminicidio. Fuente: SESNSP, RNID Fuero común – Víctimas, incidencia delictiva municipal. Los datos se regeneran con `feminicidios_municipal/preparar_datos_municipales.py`.
+
 ## 📊 Sobre el proyecto
 
 Este mapa fue desarrollado como parte del curso Datos contra feminicidios de ILDA (Iniciativa Latinoamericana de Datos Abiertos), y presentado en Dev Day 4 Women CDMX (julio 2026). Incluye actualmente 62 organizaciones y proyectos:
