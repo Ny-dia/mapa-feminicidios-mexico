@@ -12,7 +12,7 @@ Víctimas de feminicidio, tentativa de feminicidio y muertes violentas de mujere
 
 ## 📊 Sobre el proyecto
 
-Este mapa fue desarrollado como parte del curso Datos contra feminicidios de ILDA (Iniciativa Latinoamericana de Datos Abiertos), y presentado en Dev Day 4 Women CDMX (julio 2026). Incluye actualmente 62 organizaciones y proyectos:
+Este mapa fue desarrollado como parte del curso Datos contra feminicidios de ILDA (Iniciativa Latinoamericana de Datos Abiertos), y presentado en Dev Day 4 Women CDMX (julio 2026). Incluye actualmente 77 organizaciones y proyectos:
 
 - 📍 Ubicación geográfica de cada organización
 - 📝 Metodología de registro
