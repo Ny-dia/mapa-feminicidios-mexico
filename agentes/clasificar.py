@@ -1,7 +1,11 @@
 """Agente 2: extracción/clasificación a partir de un link.
 
-Dado un link, lee la fuente con web_fetch y completa Metodología de Registro,
-Tipo de Datos y Productos, y Tipo de Organización o Proyecto.
+Dado un link, lee la fuente y completa Metodología de Registro, Tipo de Datos
+y Productos, y Tipo de Organización o Proyecto.
+
+Si hay FIRECRAWL_API_KEY en .env, lee la página con Firecrawl (más la página de
+metodología / quiénes somos si la encuentra) y hace UNA llamada a Claude. Si no,
+usa el camino anterior con la herramienta web_fetch de Claude.
 
 Uso:
     python agentes/clasificar.py --url https://ejemplo.org
@@ -22,8 +26,11 @@ from common import (
     categoria_valida,
     client,
 )
+import firecrawl_client
 
-UMBRAL_VAGO = 15  # texto con menos de N caracteres se considera vacío/vago
+UMBRAL_VAGO = 15
+MAX_CHARS_POR_PAGINA = 12000  # recorta páginas larguísimas para no gastar tokens de más
+MIN_CHARS_UTILES = 300        # menos que esto = la página casi no tiene texto  # texto con menos de N caracteres se considera vacío/vago
 URL_PATTERN = re.compile(r"https?://\S+")
 
 
@@ -34,7 +41,55 @@ def primera_url(contacto: str) -> str:
     return match.group(0).rstrip(".,;") if match else ""
 
 
+INSTRUCCIONES_CLASIFICACION = f"""Describe con el mayor detalle posible:
+1) Qué metodología usa esta organización o proyecto para registrar/documentar feminicidios
+   (ej. monitoreo hemerográfico, reportes ciudadanos, solicitudes de información pública, etc.)
+2) Qué tipo de datos o productos genera (base de datos descargable, mapa interactivo,
+   minidocumental, performance, reporte anual, etc.)
+3) A cuál de estas 5 categorías pertenece: {", ".join(CATEGORIAS_VALIDAS)}
+
+Para categoria usa exactamente una de esas opciones. Basa todo SOLO en el texto
+de las páginas; si algo no aparece ahí, deja ese campo como cadena vacía."""
+
+
 def clasificar_fuente(url: str) -> Optional[Clasificacion]:
+    if firecrawl_client.disponible():
+        return clasificar_con_firecrawl(url)
+    return clasificar_con_web_fetch(url)
+
+
+def clasificar_con_firecrawl(url: str) -> Optional[Clasificacion]:
+    paginas = []
+    for u in [url] + firecrawl_client.subpaginas_relevantes(url):
+        pagina = firecrawl_client.leer_pagina(u)
+        if pagina["error"]:
+            print(f"  -> Firecrawl no pudo leer {u}: {pagina['error']}")
+            continue
+        if pagina["markdown"].strip():
+            paginas.append((u, pagina["markdown"][:MAX_CHARS_POR_PAGINA]))
+
+    total = sum(len(md) for _, md in paginas)
+    if total < MIN_CHARS_UTILES:
+        print(f"  -> muy poco texto legible ({total} caracteres); "
+              f"puede ser un sitio solo de redes sociales o con contenido en imágenes")
+        return None
+
+    print(f"  -> leídas {len(paginas)} página(s): {', '.join(u for u, _ in paginas)}")
+    contenido = "\n\n".join(f"### Página: {u}\n\n{md}" for u, md in paginas)
+    resp = client.messages.parse(
+        model=MODEL,
+        max_tokens=1500,
+        thinking={"type": "disabled"},
+        messages=[{
+            "role": "user",
+            "content": f"{INSTRUCCIONES_CLASIFICACION}\n\n<paginas>\n{contenido}\n</paginas>",
+        }],
+        output_format=Clasificacion,
+    )
+    return resp.parsed_output
+
+
+def clasificar_con_web_fetch(url: str) -> Optional[Clasificacion]:
     prompt = f"""Lee el contenido de esta página: {url}
 
 Describe con el mayor detalle posible:

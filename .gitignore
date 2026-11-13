@@ -5,3 +5,6 @@ __pycache__/
 # Archivos de trabajo generados por los agentes (revisar antes de fusionar/commitear)
 organizaciones_nuevas.csv
 reporte_qa.csv
+
+# Caché de páginas leídas con Firecrawl (agentes/firecrawl_client.py)
+.cache_firecrawl/

@@ -18,6 +18,7 @@ cp .env.example .env
 
 ```
 ANTHROPIC_API_KEY=sk-ant-...
+FIRECRAWL_API_KEY=fc-...   # opcional, ver sección Firecrawl
 ```
 
 ## Los 4 agentes
@@ -71,6 +72,19 @@ python agentes/qa.py --csv otra_ruta.csv
 # Descubrir con temas personalizados en vez de la lista por default
 python agentes/descubrir.py "colectivos en Chiapas" "arte memorial en Jalisco"
 ```
+
+## Firecrawl (opcional)
+
+Si `FIRECRAWL_API_KEY` está en `.env`, dos agentes lo usan:
+
+- **`clasificar.py`** lee la página con Firecrawl (texto limpio en markdown) y, si la encuentra, también la página de metodología / quiénes somos / informes del mismo sitio. Luego hace una sola llamada a Claude con ese texto. Si la página casi no tiene texto (sitios que solo viven en redes sociales), lo avisa en vez de inventar.
+- **`qa.py`** primero prueba los enlaces con `requests` (gratis). Solo los que fallan se vuelven a probar con Firecrawl, que abre sitios que bloquean bots o necesitan JavaScript. Además reporta `enlace_redirige_a_otro_dominio` y `pagina_casi_vacia`. Para correrlo sin gastar créditos: `python agentes/qa.py --sin-firecrawl`.
+
+Sin la llave, ambos funcionan como antes (`web_fetch` y `requests`).
+
+Las páginas leídas en `clasificar.py` se guardan 30 días en `.cache_firecrawl/` (ignorada por git) para no pagar dos veces por la misma página. `qa.py` no usa la caché porque necesita el estado actual del sitio.
+
+Créditos aproximados: ~1 por página leída y ~1 por cada `map` de un sitio. `clasificar.py` gasta hasta ~4 por organización; `qa.py` gasta 1 por cada enlace que falló con `requests`.
 
 ## Costos aproximados
 
