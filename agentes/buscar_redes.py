@@ -10,8 +10,11 @@ Cómo funciona:
 3. Se descarta cualquier URL que no haya salido tal cual en la búsqueda, para
    que el modelo no pueda inventar links.
 
-Solo agrega web y redes, nunca domicilios ni teléfonos (para eso está
-buscar_domicilios.py, y solo con organizaciones formales).
+Domicilios: si la organización es FORMAL (A.C., IAP, fundación, instituto,
+universidad) y algún resultado trae su domicilio, también lo agrega como
+"Dirección:" (o "Dirección (parcial):" si falta calle o número). A colectivas,
+artistas y movimientos nunca se les agrega domicilio, por la misma razón de
+seguridad que en buscar_domicilios.py. Nunca agrega teléfonos personales.
 
 Por default solo procesa filas cuyo Contacto está vacío o solo tiene
 "Fuente:" (la nota de prensa donde se encontró la organización). Las "Fuente:"
@@ -28,6 +31,7 @@ búsqueda (una o dos por organización).
 """
 
 import argparse
+import re
 import sys
 from typing import List
 
@@ -64,6 +68,19 @@ class EnlaceOficial(BaseModel):
 
 class EnlacesOficiales(BaseModel):
     enlaces: List[EnlaceOficial]
+    domicilio: str = ""
+    domicilio_completo: bool = False
+
+
+# Organizaciones con registro formal: solo a estas se les agrega domicilio.
+PATRON_FORMAL = re.compile(
+    r"\bA\.?\s?C\.?(?=\W|$)|\bI\.?\s?A\.?\s?P\.?(?=\W|$)|fundaci[oó]n|instituto|universidad|UAGro",
+    re.IGNORECASE,
+)
+
+
+def es_formal(nombre: str) -> bool:
+    return bool(PATRON_FORMAL.search(nombre))
 
 
 def etiqueta(url: str) -> str:
@@ -94,9 +111,20 @@ def necesita_busqueda(contacto: str) -> bool:
     return not piezas or all(p.startswith("Fuente:") for p in piezas)
 
 
-def elegir_oficiales(nombre: str, estado: str, resultados: list[dict]) -> list[EnlaceOficial]:
+def elegir_oficiales(nombre: str, estado: str, resultados: list[dict]) -> tuple[list[EnlaceOficial], str]:
+    """Regresa (enlaces oficiales, domicilio). El domicilio solo se pide a
+    organizaciones formales y viene vacío si no aparece en los resultados."""
     if not resultados:
-        return []
+        return [], ""
+    formal = es_formal(nombre)
+    instruccion_domicilio = (
+        "\nAdemás, si en algún título o descripción aparece el domicilio postal de ESTA "
+        "organización, cópialo en `domicilio` tal como aparece (no lo completes ni lo "
+        "corrijas) y marca domicilio_completo=true solo si incluye calle y número. "
+        "Si no aparece, deja domicilio vacío.\n"
+        if formal else
+        "\nDeja `domicilio` vacío siempre.\n"
+    )
     lista = "\n".join(
         f"{i}. {r['url']}\n   Título: {r['titulo']}\n   Descripción: {r['descripcion']}"
         for i, r in enumerate(resultados, 1)
@@ -116,6 +144,7 @@ Descarta:
 - dependencias de gobierno (fiscalías, institutos de la mujer, secretarías)
 - enlaces a una publicación específica si no es la página principal de la cuenta
 
+{instruccion_domicilio}
 Si dudas de que una cuenta sea de esa organización, NO la incluyas. Es mejor
 regresar una lista vacía que un enlace equivocado. Copia cada URL exactamente
 como aparece.
@@ -137,18 +166,24 @@ como aparece.
             continue
         enlace.url = limpiar_url(enlace.url)
         elegidos.append(enlace)
-    return elegidos
+    domicilio = resp.parsed_output.domicilio.strip() if formal else ""
+    if domicilio:
+        etiqueta_dom = "Dirección" if resp.parsed_output.domicilio_completo else "Dirección (parcial)"
+        domicilio = f"{etiqueta_dom}: {domicilio}"
+    return elegidos, domicilio
 
 
-def buscar_enlaces(nombre: str, estado: str) -> list[EnlaceOficial]:
+def buscar_enlaces(nombre: str, estado: str) -> tuple[list[EnlaceOficial], str]:
     resultados = firecrawl_client.buscar(f'"{nombre}" {estado}', LIMITE_RESULTADOS)
-    elegidos = elegir_oficiales(nombre, estado, resultados)
+    elegidos, domicilio = elegir_oficiales(nombre, estado, resultados)
 
     if not any(etiqueta(e.url) in REDES for e in elegidos):
         extra = firecrawl_client.buscar(f"{nombre} {estado} facebook instagram", LIMITE_RESULTADOS)
         vistos = {r["url"] for r in resultados}
         extra = [r for r in extra if r["url"] not in vistos]
-        elegidos += elegir_oficiales(nombre, estado, extra)
+        mas, domicilio_extra = elegir_oficiales(nombre, estado, extra)
+        elegidos += mas
+        domicilio = domicilio or domicilio_extra
 
     # Una URL por etiqueta+URL, en orden de aparición.
     unicos, vistos = [], set()
@@ -157,7 +192,7 @@ def buscar_enlaces(nombre: str, estado: str) -> list[EnlaceOficial]:
         if clave not in vistos:
             vistos.add(clave)
             unicos.append(e)
-    return unicos
+    return unicos, domicilio
 
 
 def main():
@@ -188,19 +223,23 @@ def main():
         nombre = str(df.at[i, "Organización"])
         estado = str(df.at[i, "Estado"])
         print(f"{nombre} ({estado})")
-        enlaces = buscar_enlaces(nombre, estado)
-        if not enlaces:
+        enlaces, domicilio = buscar_enlaces(nombre, estado)
+        if not enlaces and not domicilio:
             print("  -> nada oficial encontrado, se deja como está\n")
             continue
 
         for e in enlaces:
             print(f"  + {etiqueta(e.url)}: {e.url}  ({e.por_que})")
+        if domicilio:
+            print(f"  + {domicilio}")
         print()
         encontradas += 1
 
         actuales = [p for p in piezas_contacto(df.at[i, COLUMNA_CONTACTO]) if not p.startswith("Fuente:")]
         ya_estan = " ".join(actuales).lower()
         nuevas = [f"{etiqueta(e.url)}: {e.url}" for e in enlaces if e.url.rstrip("/").lower() not in ya_estan]
+        if domicilio and not any(p.startswith("Dirección") for p in actuales):
+            nuevas.append(domicilio)
         df.at[i, COLUMNA_CONTACTO] = " | ".join(nuevas + actuales)
 
     print(f"Con enlaces nuevos: {encontradas} de {len(filas)}")

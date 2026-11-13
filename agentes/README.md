@@ -75,7 +75,7 @@ python agentes/descubrir.py "colectivos en Chiapas" "arte memorial en Jalisco"
 
 ## Buscar web y redes oficiales (`buscar_redes.py`)
 
-Busca el nombre de cada organización con Firecrawl y deja que Claude elija, de los resultados, solo el sitio y las cuentas que son de la organización (descarta notas de prensa, publicaciones sueltas, perfiles personales, homónimos y cuentas de gobierno). Solo acepta URLs que salieron tal cual en la búsqueda, así que no puede inventar links. Nunca agrega domicilios ni teléfonos.
+Busca el nombre de cada organización con Firecrawl y deja que Claude elija, de los resultados, solo el sitio y las cuentas que son de la organización (descarta notas de prensa, publicaciones sueltas, perfiles personales, homónimos y cuentas de gobierno). Solo acepta URLs que salieron tal cual en la búsqueda, así que no puede inventar links. Si la organización es formal (A.C., IAP, fundación, instituto, universidad) y algún resultado trae su domicilio, lo agrega como `Dirección:` o `Dirección (parcial):`; a colectivas y artistas nunca se les agrega domicilio.
 
 Por default procesa las filas cuyo Contacto está vacío o solo tiene `Fuente:` (la nota de prensa donde se encontró la organización):
 
