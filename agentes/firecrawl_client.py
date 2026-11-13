@@ -114,6 +114,21 @@ def subpaginas_relevantes(url: str, maximo: int = 2) -> list[str]:
     return elegidas
 
 
+def buscar(consulta: str, limite: int = 10) -> list[dict]:
+    """Búsqueda web con Firecrawl. Regresa [{url, titulo, descripcion}].
+    Nunca lanza excepción: si falla, regresa lista vacía."""
+    try:
+        resultado = _fc().search(consulta, limit=limite, country="MX")
+    except Exception as e:
+        print(f"  -> búsqueda falló ({type(e).__name__}: {e})")
+        return []
+    return [
+        {"url": r.url, "titulo": r.title or "", "descripcion": r.description or ""}
+        for r in (resultado.web or [])
+        if getattr(r, "url", None)
+    ]
+
+
 def dominio(url: str) -> str:
     host = urlparse(url).netloc.lower()
     return host[4:] if host.startswith("www.") else host

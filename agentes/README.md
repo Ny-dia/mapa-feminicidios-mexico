@@ -73,6 +73,20 @@ python agentes/qa.py --csv otra_ruta.csv
 python agentes/descubrir.py "colectivos en Chiapas" "arte memorial en Jalisco"
 ```
 
+## Buscar web y redes oficiales (`buscar_redes.py`)
+
+Busca el nombre de cada organización con Firecrawl y deja que Claude elija, de los resultados, solo el sitio y las cuentas que son de la organización (descarta notas de prensa, publicaciones sueltas, perfiles personales, homónimos y cuentas de gobierno). Solo acepta URLs que salieron tal cual en la búsqueda, así que no puede inventar links. Nunca agrega domicilios ni teléfonos.
+
+Por default procesa las filas cuyo Contacto está vacío o solo tiene `Fuente:` (la nota de prensa donde se encontró la organización):
+
+```bash
+python agentes/buscar_redes.py --csv organizaciones_nuevas.csv --simular   # ver qué encontraría
+python agentes/buscar_redes.py --csv organizaciones_nuevas.csv
+python agentes/buscar_redes.py --csv organizaciones_nuevas.csv "Nombre exacto"
+```
+
+Gasta ~2 créditos por búsqueda, una o dos búsquedas por organización. Requiere `FIRECRAWL_API_KEY`. Revisa los enlaces antes de fusionar: si una colectiva no tiene página propia (solo aparece en publicaciones de medios), el agente la deja sin cambios.
+
 ## Firecrawl (opcional)
 
 Si `FIRECRAWL_API_KEY` está en `.env`, dos agentes lo usan:
