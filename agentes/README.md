@@ -18,6 +18,7 @@ cp .env.example .env
 
 ```
 ANTHROPIC_API_KEY=sk-ant-...
+FIRECRAWL_API_KEY=fc-...   # opcional, ver sección Firecrawl
 ```
 
 ## Los 4 agentes
@@ -71,6 +72,33 @@ python agentes/qa.py --csv otra_ruta.csv
 # Descubrir con temas personalizados en vez de la lista por default
 python agentes/descubrir.py "colectivos en Chiapas" "arte memorial en Jalisco"
 ```
+
+## Buscar web y redes oficiales (`buscar_redes.py`)
+
+Busca el nombre de cada organización con Firecrawl y deja que Claude elija, de los resultados, solo el sitio y las cuentas que son de la organización (descarta notas de prensa, publicaciones sueltas, perfiles personales, homónimos y cuentas de gobierno). Solo acepta URLs que salieron tal cual en la búsqueda, así que no puede inventar links. Si la organización es formal (A.C., IAP, fundación, instituto, universidad) y algún resultado trae su domicilio, lo agrega como `Dirección:` o `Dirección (parcial):`; a colectivas y artistas nunca se les agrega domicilio.
+
+Por default procesa las filas cuyo Contacto está vacío o solo tiene `Fuente:` (la nota de prensa donde se encontró la organización):
+
+```bash
+python agentes/buscar_redes.py --csv organizaciones_nuevas.csv --simular   # ver qué encontraría
+python agentes/buscar_redes.py --csv organizaciones_nuevas.csv
+python agentes/buscar_redes.py --csv organizaciones_nuevas.csv "Nombre exacto"
+```
+
+Gasta ~2 créditos por búsqueda, una o dos búsquedas por organización. Requiere `FIRECRAWL_API_KEY`. Revisa los enlaces antes de fusionar: si una colectiva no tiene página propia (solo aparece en publicaciones de medios), el agente la deja sin cambios.
+
+## Firecrawl (opcional)
+
+Si `FIRECRAWL_API_KEY` está en `.env`, dos agentes lo usan:
+
+- **`clasificar.py`** lee la página con Firecrawl (texto limpio en markdown) y, si la encuentra, también la página de metodología / quiénes somos / informes del mismo sitio. Luego hace una sola llamada a Claude con ese texto. Si la página casi no tiene texto (sitios que solo viven en redes sociales), lo avisa en vez de inventar.
+- **`qa.py`** primero prueba los enlaces con `requests` (gratis). Solo los que fallan se vuelven a probar con Firecrawl, que abre sitios que bloquean bots o necesitan JavaScript. Además reporta `enlace_redirige_a_otro_dominio` y `pagina_casi_vacia`. Para correrlo sin gastar créditos: `python agentes/qa.py --sin-firecrawl`.
+
+Sin la llave, ambos funcionan como antes (`web_fetch` y `requests`).
+
+Las páginas leídas en `clasificar.py` se guardan 30 días en `.cache_firecrawl/` (ignorada por git) para no pagar dos veces por la misma página. `qa.py` no usa la caché porque necesita el estado actual del sitio.
+
+Créditos aproximados: ~1 por página leída y ~1 por cada `map` de un sitio. `clasificar.py` gasta hasta ~4 por organización; `qa.py` gasta 1 por cada enlace que falló con `requests`.
 
 ## Costos aproximados
 

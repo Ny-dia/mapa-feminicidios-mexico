@@ -3,12 +3,18 @@ maestro, solo genera un reporte (reporte_qa.csv) para revisión humana.
 
 Checks técnicos (sin IA): duplicados, enlaces rotos, categoría inválida,
 coordenadas faltantes o fuera de México.
+Enlaces: primero se prueban con requests (gratis). Los que fallan se vuelven a
+probar con Firecrawl (si hay FIRECRAWL_API_KEY), que sí abre sitios que bloquean
+bots o necesitan JavaScript; así se descartan falsos "enlace roto" y solo se
+gastan créditos en los enlaces dudosos. También avisa si un enlace redirige a
+otro dominio o si la página está casi vacía.
 Check de IA (una llamada batched, sin tools): metodología/tipo de datos vagos,
 categoría que no calza con la descripción.
 
 Uso:
     python agentes/qa.py
     python agentes/qa.py --csv otra_ruta.csv
+    python agentes/qa.py --sin-firecrawl   # no gasta créditos
 """
 
 import argparse
@@ -30,10 +36,13 @@ from common import (
     client,
     normalizar_nombre,
 )
+import firecrawl_client
 
 MEXICO_BBOX = {"lat_min": 14.0, "lat_max": 33.0, "lon_min": -118.0, "lon_max": -86.0}
 TAMANO_LOTE_IA = 30
 TIMEOUT_ENLACE = 10
+MIN_CHARS_PAGINA_VIVA = 200  # con menos texto que esto, la página parece vacía o estacionada
+USAR_FIRECRAWL = True        # se apaga con --sin-firecrawl
 
 
 class HallazgoQA(BaseModel):
@@ -74,19 +83,56 @@ URL_PATTERN = re.compile(r"https?://\S+")
 
 
 def _check_url(nombre: str, url: str) -> dict | None:
+    fallo = None
     try:
         resp = requests.get(
             url, timeout=TIMEOUT_ENLACE, headers={"User-Agent": NOMINATIM_USER_AGENT}, allow_redirects=True
         )
         if resp.status_code >= 400:
-            return {
-                "organizacion": nombre,
-                "tipo_problema": "enlace_roto",
-                "detalle": f"HTTP {resp.status_code} en {url}",
-            }
+            fallo = f"HTTP {resp.status_code}"
+        elif firecrawl_client.dominio(resp.url) != firecrawl_client.dominio(url):
+            return _hallazgo_redireccion(nombre, url, resp.url)
+        else:
+            return None
     except requests.RequestException as e:
-        return {"organizacion": nombre, "tipo_problema": "enlace_roto", "detalle": f"{type(e).__name__} en {url}"}
+        fallo = type(e).__name__
+
+    if not (USAR_FIRECRAWL and firecrawl_client.disponible()):
+        return {"organizacion": nombre, "tipo_problema": "enlace_roto", "detalle": f"{fallo} en {url}"}
+    return _segunda_opinion_firecrawl(nombre, url, fallo)
+
+
+def _segunda_opinion_firecrawl(nombre: str, url: str, fallo_requests: str) -> dict | None:
+    # usar_cache=False: en QA queremos el estado actual del sitio, no uno guardado.
+    pagina = firecrawl_client.leer_pagina(url, usar_cache=False)
+    status = pagina["status_code"]
+
+    if pagina["error"] or status is None or status >= 400:
+        motivo = pagina["error"] or f"HTTP {status}"
+        return {
+            "organizacion": nombre,
+            "tipo_problema": "enlace_roto",
+            "detalle": f"{url} — requests: {fallo_requests}; Firecrawl: {motivo}",
+        }
+    if firecrawl_client.dominio(pagina["url_final"]) != firecrawl_client.dominio(url):
+        return _hallazgo_redireccion(nombre, url, pagina["url_final"])
+    if len(pagina["markdown"].strip()) < MIN_CHARS_PAGINA_VIVA:
+        return {
+            "organizacion": nombre,
+            "tipo_problema": "pagina_casi_vacia",
+            "detalle": f"{url} abre pero casi no tiene texto ({len(pagina['markdown'].strip())} caracteres); "
+                       f"revisar si sigue activa o es un dominio estacionado",
+        }
+    # requests falló pero Firecrawl la abrió bien: el sitio solo bloquea bots, no está roto.
     return None
+
+
+def _hallazgo_redireccion(nombre: str, url: str, url_final: str) -> dict:
+    return {
+        "organizacion": nombre,
+        "tipo_problema": "enlace_redirige_a_otro_dominio",
+        "detalle": f"{url} lleva a {url_final}; revisar si cambiaron de dominio o lo perdieron",
+    }
 
 
 def _check_contacto(nombre: str, contacto: str) -> list[dict]:
@@ -209,7 +255,12 @@ Solo reporta los que tengan un problema genuino. Para cada uno da: organizacion,
 def main():
     parser = argparse.ArgumentParser(description="Agente de QA del CSV maestro")
     parser.add_argument("--csv", default=str(CSV_MAESTRO), help="Ruta al CSV a revisar")
+    parser.add_argument("--sin-firecrawl", action="store_true",
+                        help="No usar Firecrawl para re-verificar enlaces (no gasta créditos)")
     args = parser.parse_args()
+
+    global USAR_FIRECRAWL
+    USAR_FIRECRAWL = not args.sin_firecrawl
 
     df = pd.read_csv(args.csv)
     print(f"Revisando {len(df)} filas de {args.csv}\n")
@@ -217,7 +268,10 @@ def main():
     hallazgos = []
     print("Checando duplicados...")
     hallazgos += check_duplicados(df)
-    print("Checando enlaces...")
+    if USAR_FIRECRAWL and firecrawl_client.disponible():
+        print("Checando enlaces (requests + Firecrawl para los que fallen)...")
+    else:
+        print("Checando enlaces (solo requests)...")
     hallazgos += check_enlaces(df)
     print("Checando categorías...")
     hallazgos += check_categorias(df)
