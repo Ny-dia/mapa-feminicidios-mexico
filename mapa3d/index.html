@@ -178,6 +178,9 @@ const estado = { buscar: "", estado: "", nacionales: true, cats: new Set(Object.
 let datos, overlay;
 const TODOS_LOS_ESTADOS = ["Aguascalientes","Baja California","Baja California Sur","Campeche","Chiapas","Chihuahua","Ciudad de México","Coahuila","Colima","Durango","Estado de México","Guanajuato","Guerrero","Hidalgo","Jalisco","Michoacán","Morelos","Nayarit","Nuevo León","Oaxaca","Puebla","Querétaro","Quintana Roo","San Luis Potosí","Sinaloa","Sonora","Tabasco","Tamaulipas","Tlaxcala","Veracruz","Yucatán","Zacatecas"];
 
+// Cambia este valor al actualizar los datos para que los navegadores no usen copias viejas.
+const VERSION_DATOS = "2026-11-19c";
+
 // Temas del fondo (lavanda por defecto). Otros: ?tema=gris | arena | noche
 const TEMAS = {
   gris:    { fondo: "#eef0f4", estado: "#ffffff", borde: "#c9c3d1", resalte: "#7c5cc4", resalteBorde: "#5b3fa6", opacidad: 0.28 },
@@ -191,7 +194,7 @@ const map = new maplibregl.Map({
   container: "map",
   style: {
     version: 8,
-    sources: { estados: { type: "geojson", data: "estados.geojson", attribution: "Límites estatales: INEGI, Marco Geoestadístico" } },
+    sources: { estados: { type: "geojson", data: "estados.geojson?v=" + VERSION_DATOS, attribution: "Límites estatales: INEGI, Marco Geoestadístico" } },
     layers: [
       { id: "fondo", type: "background", paint: { "background-color": TEMA.fondo } },
       { id: "estados-relleno", type: "fill", source: "estados", paint: { "fill-color": TEMA.estado } },
@@ -282,12 +285,35 @@ function mostrarFicha(f) {
   actualizar(false);
 }
 
+let CAJAS = {};
+fetch("estados.geojson?v=" + VERSION_DATOS).then(r => r.json()).then(g => {
+  g.features.forEach(ft => {
+    const c = [Infinity, Infinity, -Infinity, -Infinity];
+    const recorrer = a => typeof a[0] === "number"
+      ? (c[0] = Math.min(c[0], a[0]), c[1] = Math.min(c[1], a[1]), c[2] = Math.max(c[2], a[0]), c[3] = Math.max(c[3], a[1]))
+      : a.forEach(recorrer);
+    recorrer(ft.geometry.coordinates);
+    CAJAS[ft.properties.estado] = c;
+  });
+});
+
+function cajaDe(nombres) {
+  const cajas = nombres.map(n => CAJAS[n]).filter(Boolean);
+  if (!cajas.length) return null;
+  return [[Math.min(...cajas.map(c => c[0])), Math.min(...cajas.map(c => c[1]))],
+          [Math.max(...cajas.map(c => c[2])), Math.max(...cajas.map(c => c[3]))]];
+}
+
 function irA(f) {
   if (window.innerWidth < 760) {
     document.getElementById("panel").classList.remove("abierto");
     document.getElementById("btn-panel").setAttribute("aria-expanded", false);
   }
-  map.flyTo({ center: f.geometry.coordinates, zoom: Math.max(map.getZoom(), 6.5), speed: 1.2 });
+  const p = f.properties;
+  const caja = cajaDe(p.nacional ? TODOS_LOS_ESTADOS : p.cobertura);
+  const relleno = window.innerWidth >= 760 ? { left: 400, right: 420, top: 100, bottom: 40 } : { top: 120, left: 20, right: 20, bottom: Math.round(window.innerHeight * 0.6) };
+  if (caja) map.fitBounds(caja, { padding: relleno, maxZoom: 7.5, duration: 1200 });
+  else map.flyTo({ center: f.geometry.coordinates, zoom: Math.max(map.getZoom(), 6.5), speed: 1.2 });
   mostrarFicha(f);
 }
 
@@ -346,7 +372,7 @@ document.getElementById("cerrar-ficha").addEventListener("click", () => {
 });
 
 map.on("load", async () => {
-  datos = await (await fetch("organizaciones.geojson")).json();
+  datos = await (await fetch("organizaciones.geojson?v=" + VERSION_DATOS)).json();
   overlay = new deck.MapboxOverlay({
     interleaved: false, layers: [],
     getTooltip: ({ object }) => object && object.properties.nombre,
