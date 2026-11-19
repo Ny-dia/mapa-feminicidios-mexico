@@ -128,6 +128,7 @@
     <div class="leyenda">
       <div class="fila"><span class="punto" style="background:#999"></span> Sede de una organización estatal (anillo = segunda categoría)</div>
       <div class="fila"><svg class="estrella" viewBox="0 0 24 24" aria-hidden="true"><path fill="#777" d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.6 7L12 17.3 5.8 20.9l1.6-7L2 9.2l7.1-.6z"/></svg> Sede de una organización nacional</div>
+      <div class="fila"><span style="width:14px;height:10px;border-radius:2px;flex:none;background:var(--resalte);opacity:.55;border:1px solid var(--resalte-borde)"></span> Estados donde trabaja la organización seleccionada</div>
     </div>
     </div>
     </details>
@@ -146,6 +147,7 @@
   <p>Es un directorio de organizaciones, colectivas, observatorios y proyectos artísticos que documentan feminicidios en México de forma independiente al gobierno. <strong>No es un servicio de emergencia ni una estadística de casos</strong>: cada punto es una organización, no una víctima.</p>
   <ul>
     <li><strong>Estrella:</strong> organizaciones de alcance nacional, ubicadas en su sede.</li>
+    <li><strong>Estados iluminados:</strong> al abrir una ficha se iluminan los estados donde trabaja esa organización; en las de alcance nacional se ilumina todo el país.</li>
     <li><strong>Ubicación:</strong> muchos puntos marcan la ciudad, no una dirección exacta. Cuando varias organizaciones comparten la misma ubicación, se separan ligeramente para que puedan verse.</li>
     <li><strong>Filtro "Trabajan en":</strong> muestra las organizaciones que cubren ese estado, aunque su sede esté en otro.</li>
   </ul>
@@ -174,6 +176,16 @@ const ESTRELLA = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(
 
 const estado = { buscar: "", estado: "", nacionales: true, cats: new Set(Object.keys(COLORES)), seleccion: null };
 let datos, overlay;
+const TODOS_LOS_ESTADOS = ["Aguascalientes","Baja California","Baja California Sur","Campeche","Chiapas","Chihuahua","Ciudad de México","Coahuila","Colima","Durango","Estado de México","Guanajuato","Guerrero","Hidalgo","Jalisco","Michoacán","Morelos","Nayarit","Nuevo León","Oaxaca","Puebla","Querétaro","Quintana Roo","San Luis Potosí","Sinaloa","Sonora","Tabasco","Tamaulipas","Tlaxcala","Veracruz","Yucatán","Zacatecas"];
+
+// Temas del fondo. Se prueban con ?tema=lavanda | arena | noche | gris
+const TEMAS = {
+  gris:    { fondo: "#eef0f4", estado: "#ffffff", borde: "#c9c3d1", resalte: "#7c5cc4", resalteBorde: "#5b3fa6", opacidad: 0.28 },
+  lavanda: { fondo: "#ece8f2", estado: "#fbfaff", borde: "#d3cbe0", resalte: "#7c5cc4", resalteBorde: "#5b3fa6", opacidad: 0.30 },
+  arena:   { fondo: "#e9e3dc", estado: "#fdfbf8", borde: "#d6cabd", resalte: "#7c5cc4", resalteBorde: "#5b3fa6", opacidad: 0.28 },
+  noche:   { fondo: "#17151d", estado: "#26232e", borde: "#3d3848", resalte: "#a68bf0", resalteBorde: "#c9b8ff", opacidad: 0.35 }
+};
+const TEMA = TEMAS[new URLSearchParams(location.search).get("tema")] || TEMAS.gris;
 
 const map = new maplibregl.Map({
   container: "map",
@@ -181,9 +193,13 @@ const map = new maplibregl.Map({
     version: 8,
     sources: { estados: { type: "geojson", data: "estados.geojson", attribution: "Límites estatales: INEGI, Marco Geoestadístico" } },
     layers: [
-      { id: "fondo", type: "background", paint: { "background-color": "#eef0f4" } },
-      { id: "estados-relleno", type: "fill", source: "estados", paint: { "fill-color": "#ffffff" } },
-      { id: "estados-borde", type: "line", source: "estados", paint: { "line-color": "#c9c3d1", "line-width": ["interpolate", ["linear"], ["zoom"], 4, 0.6, 8, 1.4] } }
+      { id: "fondo", type: "background", paint: { "background-color": TEMA.fondo } },
+      { id: "estados-relleno", type: "fill", source: "estados", paint: { "fill-color": TEMA.estado } },
+      { id: "cobertura-relleno", type: "fill", source: "estados", filter: ["in", ["get", "estado"], ["literal", []]],
+        paint: { "fill-color": TEMA.resalte, "fill-opacity": TEMA.opacidad } },
+      { id: "estados-borde", type: "line", source: "estados", paint: { "line-color": TEMA.borde, "line-width": ["interpolate", ["linear"], ["zoom"], 4, 0.6, 8, 1.4] } },
+      { id: "cobertura-borde", type: "line", source: "estados", filter: ["in", ["get", "estado"], ["literal", []]],
+        paint: { "line-color": TEMA.resalteBorde, "line-width": 1.6 } }
     ]
   },
   center: [-101.5, 23.3], zoom: window.innerWidth < 760 ? 3.6 : 4.5, maxPitch: 70, attributionControl: { compact: true }
@@ -243,9 +259,15 @@ function linkificar(parte) {
     .replace(/([\w.+-]+@[\w-]+\.[\w.-]+)/g, m => `<a href="mailto:${m}">${m}</a>`);
 }
 
+function resaltarCobertura(nombres) {
+  const filtro = ["in", ["get", "estado"], ["literal", nombres]];
+  ["cobertura-relleno", "cobertura-borde"].forEach(id => map.getLayer(id) && map.setFilter(id, filtro));
+}
+
 function mostrarFicha(f) {
   const p = f.properties;
   estado.seleccion = f;
+  resaltarCobertura(p.nacional ? TODOS_LOS_ESTADOS : p.cobertura);
   const contacto = p.contacto ? p.contacto.split("|").map(s => s.trim()).filter(Boolean).map(linkificar).join("<br>") : "Sin datos de contacto";
   document.getElementById("ficha-contenido").innerHTML = `
     <h2>${esc(p.nombre)}</h2>
@@ -307,6 +329,8 @@ function construirFiltros() {
   document.getElementById("incluir-nacionales").addEventListener("change", e => { estado.nacionales = e.target.checked; actualizar(); });
 }
 
+document.documentElement.style.setProperty("--resalte", TEMA.resalte);
+document.documentElement.style.setProperty("--resalte-borde", TEMA.resalteBorde);
 document.getElementById("btn-3d").addEventListener("click", e => {
   const activo = e.currentTarget.getAttribute("aria-pressed") !== "true";
   e.currentTarget.setAttribute("aria-pressed", activo);
@@ -318,7 +342,7 @@ document.getElementById("btn-panel").addEventListener("click", e => {
   e.currentTarget.setAttribute("aria-expanded", abierto);
 });
 document.getElementById("cerrar-ficha").addEventListener("click", () => {
-  document.getElementById("ficha").classList.remove("visible"); estado.seleccion = null; actualizar(false);
+  document.getElementById("ficha").classList.remove("visible"); estado.seleccion = null; resaltarCobertura([]); actualizar(false);
 });
 
 map.on("load", async () => {
