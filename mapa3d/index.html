@@ -178,14 +178,14 @@ const estado = { buscar: "", estado: "", nacionales: true, cats: new Set(Object.
 let datos, overlay;
 const TODOS_LOS_ESTADOS = ["Aguascalientes","Baja California","Baja California Sur","Campeche","Chiapas","Chihuahua","Ciudad de México","Coahuila","Colima","Durango","Estado de México","Guanajuato","Guerrero","Hidalgo","Jalisco","Michoacán","Morelos","Nayarit","Nuevo León","Oaxaca","Puebla","Querétaro","Quintana Roo","San Luis Potosí","Sinaloa","Sonora","Tabasco","Tamaulipas","Tlaxcala","Veracruz","Yucatán","Zacatecas"];
 
-// Temas del fondo. Se prueban con ?tema=lavanda | arena | noche | gris
+// Temas del fondo (lavanda por defecto). Otros: ?tema=gris | arena | noche
 const TEMAS = {
   gris:    { fondo: "#eef0f4", estado: "#ffffff", borde: "#c9c3d1", resalte: "#7c5cc4", resalteBorde: "#5b3fa6", opacidad: 0.28 },
   lavanda: { fondo: "#ece8f2", estado: "#fbfaff", borde: "#d3cbe0", resalte: "#7c5cc4", resalteBorde: "#5b3fa6", opacidad: 0.30 },
   arena:   { fondo: "#e9e3dc", estado: "#fdfbf8", borde: "#d6cabd", resalte: "#7c5cc4", resalteBorde: "#5b3fa6", opacidad: 0.28 },
   noche:   { fondo: "#17151d", estado: "#26232e", borde: "#3d3848", resalte: "#a68bf0", resalteBorde: "#c9b8ff", opacidad: 0.35 }
 };
-const TEMA = TEMAS[new URLSearchParams(location.search).get("tema")] || TEMAS.gris;
+const TEMA = TEMAS[new URLSearchParams(location.search).get("tema")] || TEMAS.lavanda;
 
 const map = new maplibregl.Map({
   container: "map",
