@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Quién documenta los feminicidios en México · mapa 3D (prototipo)</title>
+<meta name="description" content="Directorio en mapa de organizaciones, colectivas y proyectos artísticos que documentan feminicidios en México de forma independiente.">
+<link rel="stylesheet" href="vendor/maplibre-gl.css">
+<style>
+  :root {
+    --magenta: #b8336a;
+    --magenta-suave: #f6e3ec;
+    --tinta: #1f1d24;
+    --gris: #5f5b66;
+    --linea: #e4e0e8;
+    --fondo: #faf8fb;
+    --panel: 360px;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; color: var(--tinta); background: var(--fondo); }
+  #map { position: absolute; inset: 0; }
+
+  header {
+    position: absolute; top: 12px; left: 12px; right: 12px; z-index: 5;
+    display: flex; align-items: center; gap: 8px; flex-wrap: wrap; pointer-events: none;
+  }
+  header > * { pointer-events: auto; }
+  .titulo {
+    background: #fff; border-radius: 12px; padding: 10px 14px; box-shadow: 0 2px 10px rgba(0,0,0,.12);
+    margin-right: auto; max-width: 560px;
+  }
+  .titulo h1 { margin: 0; font-size: 1.05rem; color: var(--magenta); line-height: 1.25; }
+  .titulo p { margin: 2px 0 0; font-size: .8rem; color: var(--gris); }
+  .boton {
+    background: #fff; border: 1px solid var(--linea); border-radius: 999px; padding: 9px 14px; font: inherit;
+    font-size: .85rem; cursor: pointer; box-shadow: 0 2px 8px rgba(0,0,0,.08); color: var(--tinta);
+  }
+  .boton[aria-pressed="true"] { background: var(--magenta); color: #fff; border-color: var(--magenta); }
+  .boton:focus-visible, input:focus-visible, select:focus-visible { outline: 3px solid #f0a8c6; outline-offset: 2px; }
+
+  #panel {
+    position: absolute; z-index: 4; top: 92px; left: 12px; bottom: 12px; width: var(--panel);
+    background: #fff; border-radius: 14px; box-shadow: 0 4px 18px rgba(0,0,0,.14);
+    display: flex; flex-direction: column; overflow: hidden;
+  }
+  #panel .filtros { padding: 14px; border-bottom: 1px solid var(--linea); display: grid; gap: 10px; }
+  #panel label.campo { font-size: .75rem; font-weight: 600; color: var(--gris); text-transform: uppercase; letter-spacing: .03em; }
+  input[type="search"], select {
+    width: 100%; padding: 9px 11px; border: 1px solid var(--linea); border-radius: 10px; font: inherit; font-size: .9rem; background: #fff;
+  }
+  .cats { display: grid; gap: 4px; }
+  .cats label { display: flex; align-items: center; gap: 8px; font-size: .85rem; cursor: pointer; }
+  .punto { width: 12px; height: 12px; border-radius: 50%; flex: none; border: 2px solid #fff; box-shadow: 0 0 0 1px rgba(0,0,0,.25); }
+  .estrella { width: 15px; height: 15px; flex: none; }
+  .fila { display: flex; align-items: center; gap: 8px; font-size: .85rem; }
+  .leyenda { font-size: .78rem; color: var(--gris); display: grid; gap: 4px; }
+  #conteo { font-size: .8rem; color: var(--gris); padding: 8px 14px; border-bottom: 1px solid var(--linea); }
+  #lista { list-style: none; margin: 0; padding: 0; overflow-y: auto; flex: 1; }
+  #lista li button {
+    width: 100%; text-align: left; background: none; border: 0; border-bottom: 1px solid var(--linea);
+    padding: 10px 14px; font: inherit; cursor: pointer; display: grid; gap: 2px;
+  }
+  #lista li button:hover, #lista li button:focus-visible { background: var(--magenta-suave); }
+  #lista .nombre { font-size: .88rem; font-weight: 600; }
+  #lista .meta { font-size: .76rem; color: var(--gris); display: flex; align-items: center; gap: 6px; }
+
+  #ficha {
+    position: absolute; z-index: 6; top: 92px; right: 12px; width: 380px; max-height: calc(100% - 104px);
+    background: #fff; border-radius: 14px; box-shadow: 0 4px 18px rgba(0,0,0,.18); overflow-y: auto; padding: 16px 18px; display: none;
+  }
+  #ficha.visible { display: block; }
+  #ficha h2 { margin: 0 28px 6px 0; font-size: 1.05rem; color: var(--magenta); }
+  #ficha .chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 6px 0 10px; }
+  #ficha .chip { font-size: .72rem; padding: 3px 8px; border-radius: 999px; background: var(--magenta-suave); }
+  #ficha h3 { font-size: .75rem; text-transform: uppercase; letter-spacing: .03em; color: var(--gris); margin: 12px 0 4px; }
+  #ficha p { margin: 0; font-size: .88rem; line-height: 1.45; }
+  #ficha .aviso { font-size: .76rem; color: var(--gris); background: var(--fondo); border-radius: 8px; padding: 6px 8px; margin-top: 10px; }
+  #ficha a { color: var(--magenta); word-break: break-all; }
+  .cerrar { position: absolute; top: 10px; right: 10px; border: 0; background: none; font-size: 1.3rem; cursor: pointer; color: var(--gris); }
+
+  dialog { border: 0; border-radius: 14px; max-width: 620px; padding: 22px 24px; box-shadow: 0 10px 40px rgba(0,0,0,.3); }
+  dialog::backdrop { background: rgba(20,10,20,.45); }
+  dialog h2 { color: var(--magenta); margin-top: 0; }
+  dialog p, dialog li { font-size: .92rem; line-height: 1.5; }
+
+  #btn-panel { display: none; }
+  @media (max-width: 760px) {
+    .titulo { max-width: none; width: 100%; }
+    .titulo p { display: none; }
+    #btn-panel { display: inline-block; }
+    #panel { top: auto; left: 0; right: 0; bottom: 0; width: auto; height: 62%; border-radius: 16px 16px 0 0; display: none; }
+    #panel.abierto { display: flex; }
+    #ficha { top: auto; left: 0; right: 0; bottom: 0; width: auto; max-height: 60%; border-radius: 16px 16px 0 0; }
+  }
+</style>
+</head>
+<body>
+<div id="map" role="region" aria-label="Mapa de organizaciones"></div>
+
+<header>
+  <div class="titulo">
+    <h1>Quién documenta los feminicidios en México</h1>
+    <p>Organizaciones, colectivas y proyectos artísticos independientes · prototipo 3D</p>
+  </div>
+  <button class="boton" id="btn-panel" aria-expanded="false">Buscar y filtrar</button>
+  <button class="boton" id="btn-3d" aria-pressed="false">Vista 3D</button>
+  <button class="boton" id="btn-sobre">Sobre este mapa</button>
+</header>
+
+<aside id="panel" aria-label="Buscador, filtros y lista">
+  <div class="filtros">
+    <div>
+      <label class="campo" for="buscar">Buscar</label>
+      <input type="search" id="buscar" placeholder="Nombre, tema, ciudad…" autocomplete="off">
+    </div>
+    <div>
+      <label class="campo" for="estado">Trabajan en</label>
+      <select id="estado"><option value="">Todo el país</option></select>
+    </div>
+    <details id="mas-filtros" open>
+    <summary class="campo" style="cursor:pointer;margin-bottom:8px">Más filtros y leyenda</summary>
+    <div style="display:grid;gap:10px">
+    <label class="fila"><input type="checkbox" id="incluir-nacionales" checked> Incluir organizaciones de alcance nacional</label>
+    <fieldset style="border:0;padding:0;margin:0">
+      <legend class="campo" style="margin-bottom:4px">Tipo</legend>
+      <div class="cats" id="cats"></div>
+    </fieldset>
+    <label class="fila"><input type="checkbox" id="ver-arcos" checked> Mostrar arcos hacia otros estados que cubren</label>
+    <div class="leyenda">
+      <div class="fila"><span class="punto" style="background:#999"></span> Sede de una organización estatal (anillo = segunda categoría)</div>
+      <div class="fila"><svg class="estrella" viewBox="0 0 24 24" aria-hidden="true"><path fill="#777" d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.6 7L12 17.3 5.8 20.9l1.6-7L2 9.2l7.1-.6z"/></svg> Sede de una organización nacional</div>
+    </div>
+    </div>
+    </details>
+  </div>
+  <div id="conteo" aria-live="polite"></div>
+  <ul id="lista"></ul>
+</aside>
+
+<article id="ficha" aria-live="polite">
+  <button class="cerrar" id="cerrar-ficha" aria-label="Cerrar ficha">×</button>
+  <div id="ficha-contenido"></div>
+</article>
+
+<dialog id="sobre">
+  <h2>Sobre este mapa</h2>
+  <p>Es un directorio de organizaciones, colectivas, observatorios y proyectos artísticos que documentan feminicidios en México de forma independiente al gobierno. <strong>No es un servicio de emergencia ni una estadística de casos</strong>: cada punto es una organización, no una víctima.</p>
+  <ul>
+    <li><strong>Estrella:</strong> organizaciones de alcance nacional, ubicadas en su sede.</li>
+    <li><strong>Arcos:</strong> organizaciones que trabajan en estados distintos al de su sede.</li>
+    <li><strong>Ubicación:</strong> muchos puntos marcan la ciudad, no una dirección exacta. Cuando varias organizaciones comparten la misma ubicación, se separan ligeramente para que puedan verse.</li>
+    <li><strong>Filtro "Trabajan en":</strong> muestra las organizaciones que cubren ese estado, aunque su sede esté en otro.</li>
+  </ul>
+  <p>Proyecto de Nydia Mejía Zavala. Datos y código: <a href="https://github.com/Ny-dia/mapa-feminicidios-mexico" target="_blank" rel="noopener">github.com/Ny-dia/mapa-feminicidios-mexico</a>. Mapa base © colaboradores de OpenStreetMap.</p>
+  <form method="dialog"><button class="boton">Cerrar</button></form>
+</dialog>
+
+<script src="vendor/maplibre-gl.js"></script>
+<script src="vendor/deckgl.min.js"></script>
+<script>
+const COLORES = {
+  "Observatorio / informe estadístico": "#2a78d6",
+  "Base de datos / mapa interactivo": "#008300",
+  "Arte y memoria": "#e87ba4",
+  "Periodismo / documentación independiente": "#eda100",
+  "Incidencia y defensa legal": "#1baf7a",
+  "Sin categoría": "#898781"
+};
+const hex = h => [parseInt(h.slice(1,3),16), parseInt(h.slice(3,5),16), parseInt(h.slice(5,7),16)];
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const norm = s => String(s ?? "").normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
+const ESTRELLA = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(
+  '<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24"><path fill="#fff" d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.6 7L12 17.3 5.8 20.9l1.6-7L2 9.2l7.1-.6z"/></svg>');
+
+const estado = { buscar: "", estado: "", nacionales: true, cats: new Set(Object.keys(COLORES)), arcos: true, seleccion: null };
+let datos, overlay;
+
+const map = new maplibregl.Map({
+  container: "map",
+  style: {
+    version: 8,
+    sources: { osm: { type: "raster", tiles: ["https://tile.openstreetmap.org/{z}/{x}/{y}.png"], tileSize: 256,
+      attribution: "© colaboradores de OpenStreetMap" } },
+    layers: [{ id: "osm", type: "raster", source: "osm", paint: { "raster-saturation": -0.75, "raster-contrast": -0.1, "raster-opacity": 0.85 } }]
+  },
+  center: [-101.5, 23.3], zoom: window.innerWidth < 760 ? 3.6 : 4.5, maxPitch: 70, attributionControl: { compact: true }
+});
+const PADDING = () => window.innerWidth >= 760 ? { left: 380, top: 80, right: 20, bottom: 20 } : { top: 110, left: 10, right: 10, bottom: 10 };
+map.once("load", () => map.fitBounds([[-118.2, 14.4], [-86.4, 32.9]], { padding: PADDING(), duration: 0 }));
+map.addControl(new maplibregl.NavigationControl({ visualizePitch: true }), "bottom-right");
+
+function visibles() {
+  const q = norm(estado.buscar);
+  return datos.features.filter(f => {
+    const p = f.properties;
+    if (!p.categorias.some(c => estado.cats.has(c))) return false;
+    if (p.nacional && !estado.nacionales) return false;
+    if (estado.estado) {
+      const cubre = p.nacional || p.cobertura.includes(estado.estado) || p.estado === estado.estado;
+      if (!cubre) return false;
+    }
+    if (q) {
+      const texto = norm([p.nombre, p.estado, p.metodologia, p.productos, p.categorias.join(" "), p.cobertura.join(" ")].join(" "));
+      if (!q.split(/\s+/).every(t => texto.includes(t))) return false;
+    }
+    return true;
+  });
+}
+
+function capas(vis) {
+  const ids = new Set(vis.map(f => f.properties.id));
+  const locales = vis.filter(f => !f.properties.nacional);
+  const nacionales = vis.filter(f => f.properties.nacional);
+  const sel = estado.seleccion;
+  return [
+    new deck.ArcLayer({
+      id: "arcos", data: estado.arcos ? datos.arcos.filter(a => ids.has(a.id)) : [],
+      getSourcePosition: a => a.desde, getTargetPosition: a => a.hacia,
+      getSourceColor: a => [...hex(COLORES[a.categoria] || "#898781"), 230],
+      getTargetColor: a => [...hex(COLORES[a.categoria] || "#898781"), 90],
+      getWidth: 3, widthUnits: "pixels", getHeight: 0.6, pickable: true
+    }),
+    new deck.ScatterplotLayer({
+      id: "seleccion", data: sel ? [sel] : [], getPosition: f => f.geometry.coordinates,
+      radiusUnits: "pixels", getRadius: 17, billboard: true, filled: false, stroked: true, getLineColor: [184, 51, 106, 255], lineWidthUnits: "pixels", getLineWidth: 3
+    }),
+    new deck.ScatterplotLayer({
+      id: "locales", data: locales, getPosition: f => f.geometry.coordinates, pickable: true, billboard: true,
+      radiusUnits: "pixels", getRadius: 7, stroked: true, lineWidthUnits: "pixels", getLineWidth: f => f.properties.categorias.length > 1 ? 3 : 1.5,
+      getFillColor: f => [...hex(COLORES[f.properties.categorias[0]]), 235],
+      getLineColor: f => f.properties.categorias.length > 1 ? hex(COLORES[f.properties.categorias[1]]) : [255, 255, 255]
+    }),
+    new deck.ScatterplotLayer({
+      id: "halo-nacionales", data: nacionales, getPosition: f => f.geometry.coordinates,
+      radiusUnits: "pixels", getRadius: 12, billboard: true, getFillColor: [255, 255, 255, 230], stroked: true, getLineColor: [60, 60, 60, 120], lineWidthUnits: "pixels", getLineWidth: 1
+    }),
+    new deck.IconLayer({
+      id: "nacionales", data: nacionales, getPosition: f => f.geometry.coordinates, pickable: true,
+      billboard: true, getIcon: () => ({ url: ESTRELLA, width: 64, height: 64, mask: true }), sizeUnits: "pixels", getSize: 20,
+      getColor: f => hex(COLORES[f.properties.categorias[0]])
+    })
+  ];
+}
+
+function linkificar(parte) {
+  return esc(parte)
+    .replace(/(https?:\/\/[^\s|]+)/g, u => `<a href="${u}" target="_blank" rel="noopener">${u}</a>`)
+    .replace(/([\w.+-]+@[\w-]+\.[\w.-]+)/g, m => `<a href="mailto:${m}">${m}</a>`);
+}
+
+function mostrarFicha(f) {
+  const p = f.properties;
+  estado.seleccion = f;
+  const contacto = p.contacto ? p.contacto.split("|").map(s => s.trim()).filter(Boolean).map(linkificar).join("<br>") : "Sin datos de contacto";
+  document.getElementById("ficha-contenido").innerHTML = `
+    <h2>${esc(p.nombre)}</h2>
+    <div class="chips">${p.categorias.map(c => `<span class="chip" style="border-left:4px solid ${COLORES[c]}">${esc(c)}</span>`).join("")}</div>
+    <h3>Sede</h3><p>${esc(p.estado)}</p>
+    <h3>Trabaja en</h3><p>${p.nacional ? "Todo el país (alcance nacional)" : esc(p.cobertura.join(", "))}</p>
+    <h3>Cómo documenta</h3><p>${esc(p.metodologia)}</p>
+    <h3>Qué produce</h3><p>${esc(p.productos)}</p>
+    <h3>Contacto</h3><p>${contacto}</p>
+    ${p.posicion_desplazada ? '<p class="aviso">Esta ubicación es aproximada: varias organizaciones comparten el mismo punto y se separaron un poco para poder verlas.</p>' : ""}`;
+  document.getElementById("ficha").classList.add("visible");
+  actualizar(false);
+}
+
+function irA(f) {
+  if (window.innerWidth < 760) {
+    document.getElementById("panel").classList.remove("abierto");
+    document.getElementById("btn-panel").setAttribute("aria-expanded", false);
+  }
+  map.flyTo({ center: f.geometry.coordinates, zoom: Math.max(map.getZoom(), 9), speed: 1.2 });
+  mostrarFicha(f);
+}
+
+function actualizar(rehacerLista = true) {
+  const vis = visibles();
+  overlay.setProps({ layers: capas(vis) });
+  if (!rehacerLista) return;
+  const n = vis.length, nac = vis.filter(f => f.properties.nacional).length;
+  document.getElementById("conteo").textContent =
+    `${n} organizaciones` + (estado.estado ? ` trabajan en ${estado.estado}` : "") + (nac ? ` (${nac} de alcance nacional)` : "");
+  const lista = document.getElementById("lista");
+  lista.innerHTML = "";
+  vis.slice().sort((a, b) => a.properties.nombre.localeCompare(b.properties.nombre, "es")).forEach(f => {
+    const p = f.properties;
+    const li = document.createElement("li");
+    const b = document.createElement("button");
+    b.innerHTML = `<span class="nombre">${esc(p.nombre)}</span>
+      <span class="meta"><span class="punto" style="background:${COLORES[p.categorias[0]]}"></span>${p.nacional ? "Nacional · sede en " : ""}${esc(p.estado)}</span>`;
+    b.addEventListener("click", () => irA(f));
+    li.appendChild(b); lista.appendChild(li);
+  });
+}
+
+function construirFiltros() {
+  const cats = document.getElementById("cats");
+  datos.categorias.forEach(c => {
+    const l = document.createElement("label");
+    l.innerHTML = `<input type="checkbox" checked><span class="punto" style="background:${COLORES[c]}"></span>${esc(c)}`;
+    l.querySelector("input").addEventListener("change", e => { e.target.checked ? estado.cats.add(c) : estado.cats.delete(c); actualizar(); });
+    cats.appendChild(l);
+  });
+  const sel = document.getElementById("estado");
+  const estados = [...new Set(datos.features.flatMap(f => [f.properties.estado, ...f.properties.cobertura]))]
+    .filter(e => e && e !== "Nacional").sort((a, b) => a.localeCompare(b, "es"));
+  ["Querétaro"].forEach(e => { if (!estados.includes(e)) estados.push(e); });
+  estados.sort((a, b) => a.localeCompare(b, "es")).forEach(e => sel.insertAdjacentHTML("beforeend", `<option>${esc(e)}</option>`));
+  sel.addEventListener("change", e => { estado.estado = e.target.value; actualizar(); });
+  document.getElementById("buscar").addEventListener("input", e => { estado.buscar = e.target.value; actualizar(); });
+  document.getElementById("incluir-nacionales").addEventListener("change", e => { estado.nacionales = e.target.checked; actualizar(); });
+  document.getElementById("ver-arcos").addEventListener("change", e => { estado.arcos = e.target.checked; actualizar(false); });
+}
+
+document.getElementById("btn-3d").addEventListener("click", e => {
+  const activo = e.currentTarget.getAttribute("aria-pressed") !== "true";
+  e.currentTarget.setAttribute("aria-pressed", activo);
+  map.easeTo({ pitch: activo ? 55 : 0, bearing: activo ? -12 : 0, duration: 900 });
+});
+document.getElementById("btn-sobre").addEventListener("click", () => document.getElementById("sobre").showModal());
+document.getElementById("btn-panel").addEventListener("click", e => {
+  const p = document.getElementById("panel"); const abierto = p.classList.toggle("abierto");
+  e.currentTarget.setAttribute("aria-expanded", abierto);
+});
+document.getElementById("cerrar-ficha").addEventListener("click", () => {
+  document.getElementById("ficha").classList.remove("visible"); estado.seleccion = null; actualizar(false);
+});
+
+map.on("load", async () => {
+  datos = await (await fetch("organizaciones.geojson")).json();
+  overlay = new deck.MapboxOverlay({
+    interleaved: false, layers: [],
+    getTooltip: ({ object }) => object && (object.properties ? object.properties.nombre : `${object.nombre} → ${object.destino}`),
+    onClick: ({ object }) => {
+      if (!object) return;
+      if (object.properties) mostrarFicha(object);
+      else { const f = datos.features.find(x => x.properties.id === object.id); if (f) mostrarFicha(f); }
+    }
+  });
+  map.addControl(overlay);
+  construirFiltros();
+  if (window.innerWidth < 760) document.getElementById("mas-filtros").open = false;
+  actualizar();
+});
+</script>
+</body>
+</html>
