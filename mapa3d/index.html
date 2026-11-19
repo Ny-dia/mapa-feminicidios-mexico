@@ -71,7 +71,7 @@
   #ficha.visible { display: block; }
   #ficha h2 { margin: 0 28px 6px 0; font-size: 1.05rem; color: var(--magenta); }
   #ficha .chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 6px 0 10px; }
-  #ficha .chip { font-size: .72rem; padding: 3px 8px; border-radius: 999px; background: var(--magenta-suave); }
+  #ficha .chip { font-size: .74rem; font-weight: 600; padding: 4px 10px; border-radius: 999px; }
   #ficha h3 { font-size: .75rem; text-transform: uppercase; letter-spacing: .03em; color: var(--gris); margin: 12px 0 4px; }
   #ficha p { margin: 0; font-size: .88rem; line-height: 1.45; }
   #ficha .aviso { font-size: .76rem; color: var(--gris); background: var(--fondo); border-radius: 8px; padding: 6px 8px; margin-top: 10px; }
@@ -100,7 +100,7 @@
 <header>
   <div class="titulo">
     <h1>Quién documenta los feminicidios en México</h1>
-    <p>Organizaciones, colectivas y proyectos artísticos independientes · prototipo 3D</p>
+    <p>Organizaciones, colectivas y proyectos artísticos independientes · prototipo</p>
   </div>
   <button class="boton" id="btn-panel" aria-expanded="false">Buscar y filtrar</button>
   <button class="boton" id="btn-3d" aria-pressed="false">Vista 3D</button>
@@ -125,7 +125,6 @@
       <legend class="campo" style="margin-bottom:4px">Tipo</legend>
       <div class="cats" id="cats"></div>
     </fieldset>
-    <label class="fila"><input type="checkbox" id="ver-arcos" checked> Mostrar arcos hacia otros estados que cubren</label>
     <div class="leyenda">
       <div class="fila"><span class="punto" style="background:#999"></span> Sede de una organización estatal (anillo = segunda categoría)</div>
       <div class="fila"><svg class="estrella" viewBox="0 0 24 24" aria-hidden="true"><path fill="#777" d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.6 7L12 17.3 5.8 20.9l1.6-7L2 9.2l7.1-.6z"/></svg> Sede de una organización nacional</div>
@@ -147,11 +146,10 @@
   <p>Es un directorio de organizaciones, colectivas, observatorios y proyectos artísticos que documentan feminicidios en México de forma independiente al gobierno. <strong>No es un servicio de emergencia ni una estadística de casos</strong>: cada punto es una organización, no una víctima.</p>
   <ul>
     <li><strong>Estrella:</strong> organizaciones de alcance nacional, ubicadas en su sede.</li>
-    <li><strong>Arcos:</strong> organizaciones que trabajan en estados distintos al de su sede.</li>
     <li><strong>Ubicación:</strong> muchos puntos marcan la ciudad, no una dirección exacta. Cuando varias organizaciones comparten la misma ubicación, se separan ligeramente para que puedan verse.</li>
     <li><strong>Filtro "Trabajan en":</strong> muestra las organizaciones que cubren ese estado, aunque su sede esté en otro.</li>
   </ul>
-  <p>Proyecto de Nydia Mejía Zavala. Datos y código: <a href="https://github.com/Ny-dia/mapa-feminicidios-mexico" target="_blank" rel="noopener">github.com/Ny-dia/mapa-feminicidios-mexico</a>. Mapa base © colaboradores de OpenStreetMap.</p>
+  <p>Proyecto de Nydia Mejía Zavala. Datos y código: <a href="https://github.com/Ny-dia/mapa-feminicidios-mexico" target="_blank" rel="noopener">github.com/Ny-dia/mapa-feminicidios-mexico</a>. Límites estatales: INEGI, Marco Geoestadístico.</p>
   <form method="dialog"><button class="boton">Cerrar</button></form>
 </dialog>
 
@@ -167,21 +165,26 @@ const COLORES = {
   "Sin categoría": "#898781"
 };
 const hex = h => [parseInt(h.slice(1,3),16), parseInt(h.slice(3,5),16), parseInt(h.slice(5,7),16)];
+const textoSobre = h => { const [r, g, b] = hex(h).map(v => { v /= 255; return v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4; });
+  return 0.2126 * r + 0.7152 * g + 0.0722 * b > 0.3 ? "#1f1d24" : "#ffffff"; };
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const norm = s => String(s ?? "").normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase();
 const ESTRELLA = "data:image/svg+xml;charset=utf-8," + encodeURIComponent(
   '<svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24"><path fill="#fff" d="M12 2l2.9 6.6 7.1.6-5.4 4.7 1.6 7L12 17.3 5.8 20.9l1.6-7L2 9.2l7.1-.6z"/></svg>');
 
-const estado = { buscar: "", estado: "", nacionales: true, cats: new Set(Object.keys(COLORES)), arcos: true, seleccion: null };
+const estado = { buscar: "", estado: "", nacionales: true, cats: new Set(Object.keys(COLORES)), seleccion: null };
 let datos, overlay;
 
 const map = new maplibregl.Map({
   container: "map",
   style: {
     version: 8,
-    sources: { osm: { type: "raster", tiles: ["https://tile.openstreetmap.org/{z}/{x}/{y}.png"], tileSize: 256,
-      attribution: "© colaboradores de OpenStreetMap" } },
-    layers: [{ id: "osm", type: "raster", source: "osm", paint: { "raster-saturation": -0.75, "raster-contrast": -0.1, "raster-opacity": 0.85 } }]
+    sources: { estados: { type: "geojson", data: "estados.geojson", attribution: "Límites estatales: INEGI, Marco Geoestadístico" } },
+    layers: [
+      { id: "fondo", type: "background", paint: { "background-color": "#eef0f4" } },
+      { id: "estados-relleno", type: "fill", source: "estados", paint: { "fill-color": "#ffffff" } },
+      { id: "estados-borde", type: "line", source: "estados", paint: { "line-color": "#c9c3d1", "line-width": ["interpolate", ["linear"], ["zoom"], 4, 0.6, 8, 1.4] } }
+    ]
   },
   center: [-101.5, 23.3], zoom: window.innerWidth < 760 ? 3.6 : 4.5, maxPitch: 70, attributionControl: { compact: true }
 });
@@ -208,18 +211,10 @@ function visibles() {
 }
 
 function capas(vis) {
-  const ids = new Set(vis.map(f => f.properties.id));
   const locales = vis.filter(f => !f.properties.nacional);
   const nacionales = vis.filter(f => f.properties.nacional);
   const sel = estado.seleccion;
   return [
-    new deck.ArcLayer({
-      id: "arcos", data: estado.arcos ? datos.arcos.filter(a => ids.has(a.id)) : [],
-      getSourcePosition: a => a.desde, getTargetPosition: a => a.hacia,
-      getSourceColor: a => [...hex(COLORES[a.categoria] || "#898781"), 230],
-      getTargetColor: a => [...hex(COLORES[a.categoria] || "#898781"), 90],
-      getWidth: 3, widthUnits: "pixels", getHeight: 0.6, pickable: true
-    }),
     new deck.ScatterplotLayer({
       id: "seleccion", data: sel ? [sel] : [], getPosition: f => f.geometry.coordinates,
       radiusUnits: "pixels", getRadius: 17, billboard: true, filled: false, stroked: true, getLineColor: [184, 51, 106, 255], lineWidthUnits: "pixels", getLineWidth: 3
@@ -254,7 +249,7 @@ function mostrarFicha(f) {
   const contacto = p.contacto ? p.contacto.split("|").map(s => s.trim()).filter(Boolean).map(linkificar).join("<br>") : "Sin datos de contacto";
   document.getElementById("ficha-contenido").innerHTML = `
     <h2>${esc(p.nombre)}</h2>
-    <div class="chips">${p.categorias.map(c => `<span class="chip" style="border-left:4px solid ${COLORES[c]}">${esc(c)}</span>`).join("")}</div>
+    <div class="chips">${p.categorias.map(c => `<span class="chip" style="background:${COLORES[c]};color:${textoSobre(COLORES[c])}">${esc(c)}</span>`).join("")}</div>
     <h3>Sede</h3><p>${esc(p.estado)}</p>
     <h3>Trabaja en</h3><p>${p.nacional ? "Todo el país (alcance nacional)" : esc(p.cobertura.join(", "))}</p>
     <h3>Cómo documenta</h3><p>${esc(p.metodologia)}</p>
@@ -270,7 +265,7 @@ function irA(f) {
     document.getElementById("panel").classList.remove("abierto");
     document.getElementById("btn-panel").setAttribute("aria-expanded", false);
   }
-  map.flyTo({ center: f.geometry.coordinates, zoom: Math.max(map.getZoom(), 9), speed: 1.2 });
+  map.flyTo({ center: f.geometry.coordinates, zoom: Math.max(map.getZoom(), 6.5), speed: 1.2 });
   mostrarFicha(f);
 }
 
@@ -310,7 +305,6 @@ function construirFiltros() {
   sel.addEventListener("change", e => { estado.estado = e.target.value; actualizar(); });
   document.getElementById("buscar").addEventListener("input", e => { estado.buscar = e.target.value; actualizar(); });
   document.getElementById("incluir-nacionales").addEventListener("change", e => { estado.nacionales = e.target.checked; actualizar(); });
-  document.getElementById("ver-arcos").addEventListener("change", e => { estado.arcos = e.target.checked; actualizar(false); });
 }
 
 document.getElementById("btn-3d").addEventListener("click", e => {
@@ -331,12 +325,8 @@ map.on("load", async () => {
   datos = await (await fetch("organizaciones.geojson")).json();
   overlay = new deck.MapboxOverlay({
     interleaved: false, layers: [],
-    getTooltip: ({ object }) => object && (object.properties ? object.properties.nombre : `${object.nombre} → ${object.destino}`),
-    onClick: ({ object }) => {
-      if (!object) return;
-      if (object.properties) mostrarFicha(object);
-      else { const f = datos.features.find(x => x.properties.id === object.id); if (f) mostrarFicha(f); }
-    }
+    getTooltip: ({ object }) => object && object.properties.nombre,
+    onClick: ({ object }) => { if (object) mostrarFicha(object); }
   });
   map.addControl(overlay);
   construirFiltros();
